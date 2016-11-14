@@ -66,29 +66,6 @@ public class PhotogramController {
     }
 
 
-    @RequestMapping(value="/opprettBilde", method=RequestMethod.GET)
-    @ResponseBody
-    public String foob() {
-        List<Photo> photoDList = new ArrayList<Photo>();
-        Photo bilder = new Photo("1","29.03.2013","Vardo","2","2");
-        photoRepository.save(bilder);
-        User p = userRepository.findOne("5825a76336b59d0ef09da746");
-        p.setPhotos(null);
-        for(Photo ph : photoRepository.findAll()){
-            if(ph.getPhotographerID() != null && ph.getPhotographerID().contains("5825a76336b59d0ef09da746")) {
-                photoDList.add(ph);
-            }
-        }
-        p.setPhotos(photoDList);
-
-        userRepository.save(p);
-
-        return "Response!";
-        }
-
-
-
-
     @RequestMapping(path = "/user", method = RequestMethod.GET)
     public
     @ResponseBody
