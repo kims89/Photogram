@@ -45,6 +45,7 @@ public class PhotogramController {
         for(Photographer phgr : photographerRepository.findAll()){
             if(phgr.getBrukernavn() != null && phgr.getBrukernavn().contains(auth.getName())) {
                 brukerid = phgr.getId();
+
             }
         }
 
