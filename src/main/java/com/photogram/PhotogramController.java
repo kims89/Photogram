@@ -116,7 +116,7 @@ public class PhotogramController {
                            @RequestParam(value = "brukernavn") String brukernavn, @RequestParam("passord") String passord){
         User user;
         if (brukernavn != "") {
-            user = new User(fornavn, etternavn, brukernavn, passord);
+            user = new User(fornavn, etternavn, brukernavn, passord, "ROLE_USER");
             userRepository.save(user);
 
             System.out.println("Ny bruker opprettet med brukernavn: "+brukernavn+" og passord: "+passord);
