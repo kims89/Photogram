@@ -21,6 +21,7 @@ public class PhotogramController {
     PhotoRepository photoRepository;
 
 
+
     @RequestMapping("/photoadmin")
     public String home(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -129,5 +130,10 @@ public class PhotogramController {
 
         return "redirect:login";
     }
+
+    //Endre rolle
+    //        User p = userRepository.findOne("5829f946d7a15f7b50d28245");
+//        p.setRolle("ROLE_ADMIN");
+//        userRepository.save(p);
 
 }
