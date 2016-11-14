@@ -23,12 +23,6 @@ public class PhotogramController {
 
     Photographer fotograf = new Photographer("Kim","Kristensen","kimbo","kimbo");
 
-    @RequestMapping(value="/opprettBruker", method=RequestMethod.GET)
-    @ResponseBody
-    public String foo() {
-        photographerRepository.save(fotograf);
-        return "Response!";
-    }
 
     @RequestMapping("/photoadmin")
     public String home(Model model) {
