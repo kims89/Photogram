@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:width="http://www.w3.org/1999/xhtml">
+<head>
+
+    <script>
+        /*<![CDATA[*/
+        function saveImage() {
+
+        }
+
+        /*]]>*/
+    </script>
+    <title>Title</title>
+</head>
+<body>
+
+<div th:each="p : ${fotograf}">
+    <td th:text="${p.fornavn}"></td>
+        <div th:each="photo : ${p.photo}">
+            <td th:text="${photo.tittel}"></td>
+        </div>
+    <form action="/PAAddPhoto" method="POST">
+        <input type="text" id="filnavn" name="filnavn" /><br />
+        <input type="submit" value="Legg til"/>
+    </form>
+</div>
+
+</body>
+</html>
