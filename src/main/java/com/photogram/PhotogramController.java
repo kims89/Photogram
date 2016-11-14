@@ -88,7 +88,7 @@ public class PhotogramController {
 
 
 
-    @RequestMapping(path = "/photographer", method = RequestMethod.GET)
+    @RequestMapping(path = "/user", method = RequestMethod.GET)
     public
     @ResponseBody
     List<User> getPhotographerJson() {
