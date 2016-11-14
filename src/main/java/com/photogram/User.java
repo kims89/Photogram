@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by kim on 09.11.2016.
  */
-public class Photographer {
+public class User {
 
     @Id
     String id;
@@ -15,10 +15,12 @@ public class Photographer {
     String etternavn;
     String brukernavn;
     String passord;
+    String rolle;
     List<Photo> photo;
 
-    public Photographer(String fornavn, String etternavn, String brukernavn, String passord) {
+    public User(String fornavn, String etternavn, String brukernavn, String passord, String rolle) {
         this.id = id;
+        this.rolle = rolle;
         this.fornavn = fornavn;
         this.etternavn = etternavn;
         this.photo = photo;
@@ -68,5 +70,13 @@ public class Photographer {
 
     public void setPassord(String passord) {
         this.passord = passord;
+    }
+
+    public String getRolle() {
+        return rolle;
+    }
+
+    public void setRolle(String rolle) {
+        this.rolle = rolle;
     }
 }
