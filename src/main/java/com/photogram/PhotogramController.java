@@ -21,8 +21,6 @@ public class PhotogramController {
     @Autowired
     PhotoRepository photoRepository;
 
-    Photographer fotograf = new Photographer("Kim","Kristensen","kimbo","kimbo");
-
 
     @RequestMapping("/photoadmin")
     public String home(Model model) {
