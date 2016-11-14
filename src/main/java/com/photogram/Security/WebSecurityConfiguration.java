@@ -33,7 +33,7 @@ public class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdap
                 User user = userRepository.findByBrukernavn(username);
                 if(user != null) {
                     return new org.springframework.security.core.userdetails.User(user.getBrukernavn(), user.getPassord(), true, true, true, true,
-                            AuthorityUtils.createAuthorityList("ADMIN"));
+                            AuthorityUtils.createAuthorityList(user.getRolle()));
                 } else {
                     throw new UsernameNotFoundException("could not find the user '"
                             + username + "'");

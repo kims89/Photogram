@@ -116,10 +116,12 @@ public class PhotogramController {
                            @RequestParam(value = "brukernavn") String brukernavn, @RequestParam("passord") String passord){
         User user;
         if (brukernavn != "") {
-            user = new User(fornavn, etternavn, brukernavn, passord, "ROLE_USER");
-            userRepository.save(user);
+            if (userRepository.findByBrukernavn(brukernavn) == null){
+                user = new User(fornavn, etternavn, brukernavn, passord, "ROLE_ADMIN");
+                userRepository.save(user);
 
-            System.out.println("Ny bruker opprettet med brukernavn: "+brukernavn+" og passord: "+passord);
+                System.out.println("Ny bruker opprettet med brukernavn: "+brukernavn+" og passord: "+passord);
+            }
         }
         else {
             System.out.println("Brukerfelt må ha en verdi");
