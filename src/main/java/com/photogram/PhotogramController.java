@@ -112,8 +112,9 @@ public class PhotogramController {
 
     // TEST
     // --------------------------------------------------------->
-    @RequestMapping(value="foto/{name}", method = RequestMethod.GET)
-    public @ResponseBody List getUserInJSON(@PathVariable String name) {
+
+    @RequestMapping(value="/sok", method = RequestMethod.GET)
+    public @ResponseBody List getSearchInJSON() {
         List<Search> personLiswt = new ArrayList<>();
         for(Photo ph : photoRepository.findAll()){
             personLiswt.add(new Search(ph.getTittel(),"/photo/"+ph.getId()));
@@ -128,6 +129,33 @@ public class PhotogramController {
         return personLiswt;
 
     }
+
+    @RequestMapping(value="foto/{name}", method = RequestMethod.GET)
+    public List getUserInJSON(@PathVariable String name) {
+        List<Search> personLiswt = new ArrayList<>();
+        for(Photo ph : photoRepository.findAll()){
+            personLiswt.add(new Search(ph.getTittel(),"/photo/"+ph.getId()));
+        }
+
+        for(User us : userRepository.findAll()){
+            if(us.getRolle() != null && us.getRolle().contains("ROLE_ADMIN")) {
+                personLiswt.add(new Search(us.getBrukernavn(),"/photographer/"+us.getId()));
+            }
+        }
+
+        return personLiswt;
+
+    }
+
+    @RequestMapping(value="photographer/{id}", method = RequestMethod.GET)
+    public String home( Model model,@PathVariable String id) {
+        List<User> userList = new ArrayList<User>();
+        userList.add(userRepository.findOne(id));
+        model.addAttribute("fotograf", userList);
+
+        return "photoadmin";
+    }
+
     // --------------------------------------------------------->
 
     //Endre rolle
