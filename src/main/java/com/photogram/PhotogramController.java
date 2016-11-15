@@ -74,6 +74,8 @@ public class PhotogramController {
         return userRepository.findAll();
     }
 
+
+
     @RequestMapping(path = "/photo", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -108,6 +110,20 @@ public class PhotogramController {
         return "redirect:login";
     }
 
+    @RequestMapping(value="foto/{name}", method = RequestMethod.GET)
+    public @ResponseBody List getUserInJSON(@PathVariable String name) {
+        List<Search> personLiswt = new ArrayList<>();
+        for(Photo ph : photoRepository.findAll()){
+            personLiswt.add(new Search(ph.getTittel(),ph.getFilnavn()));
+        }
+
+        for(User us : userRepository.findAll()){
+            personLiswt.add(new Search(us.getBrukernavn(),us.etternavn));
+        }
+
+        return personLiswt;
+
+    }
     //Endre rolle
     //        User p = userRepository.findOne("5829f946d7a15f7b50d28245");
 //        p.setRolle("ROLE_ADMIN");
