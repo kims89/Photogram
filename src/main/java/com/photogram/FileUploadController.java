@@ -82,6 +82,7 @@ public class FileUploadController {
 
             }
         }
+
         List<Photo> photoDList = new ArrayList<Photo>();
         Photo p = new Photo();
         System.out.println(file.getOriginalFilename());
@@ -96,7 +97,15 @@ public class FileUploadController {
 
         photoRepository.save(p);
 
-        updateUser(auth.getName());
+        User user = userRepository.findOne(brukerid);
+        for(Photo ph : photoRepository.findAll()){
+            if(ph.getPhotographerID() != null && ph.getPhotographerID().contains(brukerid)) {
+                photoDList.add(ph);
+            }
+        }
+        user.setPhotos(photoDList);
+        userRepository.save(user);
+
         return "redirect:photoadmin";
     }
 
@@ -137,7 +146,6 @@ public class FileUploadController {
 
             }
             User user = userRepository.findOne(brukerid);
-            user.setPhotos(null);
             for(Photo ph : photoRepository.findAll()){
                 if(ph.getPhotographerID() != null && ph.getPhotographerID().contains(brukerid)) {
                     photoDList.add(ph);
