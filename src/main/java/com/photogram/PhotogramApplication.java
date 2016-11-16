@@ -16,8 +16,6 @@ public class PhotogramApplication {
 	@Bean
 	CommandLineRunner init(StorageService storageService) {
 		return (args) -> {
-			storageService.deleteAll();
-			storageService.init();
 		};
 	}
 

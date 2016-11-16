@@ -22,50 +22,6 @@ public class PhotogramController {
 
 
 
-    @RequestMapping("/photoadmin")
-    public String home(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        List<User> userList = new ArrayList<User>();
-        for(User p : userRepository.findAll()){
-            if(p.getBrukernavn() != null && p.getBrukernavn().contains(auth.getName())) {
-                userList.add(p);
-            }
-        }
-        model.addAttribute("fotograf", userList);
-        String name = auth.getName(); //get logged in username
-        System.out.println(name);
-
-        return "photoadmin";
-    }
-
-    @RequestMapping(value = "/PAAddPhoto", method = RequestMethod.POST)
-    public String leggTilVare(@RequestParam("filnavn") String filnavn) {
-        String brukerid = "";
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        for(User phgr : userRepository.findAll()){
-            if(phgr.getBrukernavn() != null && phgr.getBrukernavn().contains(auth.getName())) {
-                brukerid = phgr.getId();
-
-            }
-        }
-
-        List<Photo> photoDList = new ArrayList<Photo>();
-        Photo bilder = new Photo(filnavn,filnavn,filnavn,filnavn,filnavn);
-        bilder.setPhotographerID(brukerid);
-        photoRepository.save(bilder);
-        User p = userRepository.findOne(brukerid);
-        p.setPhotos(null);
-        for(Photo ph : photoRepository.findAll()){
-            if(ph.getPhotographerID() != null && ph.getPhotographerID().contains(brukerid)) {
-                photoDList.add(ph);
-            }
-        }
-        p.setPhotos(photoDList);
-        userRepository.save(p);
-        return "redirect:photoadmin";
-    }
-
-
     @RequestMapping(path = "/user", method = RequestMethod.GET)
     public
     @ResponseBody

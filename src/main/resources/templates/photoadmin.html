@@ -8,6 +8,23 @@
 
     <script>
                 /*<![CDATA[*/
+
+                function deleteBildefil(ele){
+                    var parentId = ele.parentNode.id;
+                    console.log("Logg: "+ parentId);
+                    var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.onreadystatechange = function(){
+                        if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                            ul = document.getElementById("fotografliste");
+                            ul.removeChild(ele.parentNode);
+                        }
+                    };
+
+                    xmlHttp.open("POST", "/delete/"+parentId, true);
+                    xmlHttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+                    xmlHttp.send();
+                }
+
                 $(document).ready(function () {
                     var options = {
                         url: "/sok",
@@ -38,13 +55,18 @@
 <body>
 <div th:each="p : ${fotograf}">
     <td th:text="${p.fornavn}"></td>
-        <div th:each="photo : ${p.photo}">
+    <ul id="fotografliste">
+        <li th:each="photo : ${p.photo}" th:id="${photo.id}">
             <td th:text="${photo.tittel}"></td>
-        </div>
-    <form action="/PAAddPhoto" method="POST">
-        <input type="text" id="filnavn" name="filnavn" /><br />
+            <img th:src="${photo.filnavn}" width="400" />
+            <button onClick="deleteBildefil(this);">Slett bilde</button>
+        </li>
+    <form action="/PAAddPhoto" enctype="multipart/form-data" method="POST">
+        <input type="file" name="file" /><br />
+        <input type="text" id="filnavn" name="tittel" /><br />
         <input type="submit" value="Legg til"/>
     </form>
+    </ul>
 </div>
 <div>
     <input id="template-links" />

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -17,7 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,17 +44,18 @@ public class FileUploadController {
         this.storageService = storageService;
     }
 
-
-    @GetMapping("/photoadmin")
-    public String listUploadedFiles(Model model) throws IOException {
-
-        model.addAttribute("files", storageService
-                .loadAll()
-                .map(path ->
-                        MvcUriComponentsBuilder
-                                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
-                                .build().toString())
-                .collect(Collectors.toList()));
+    @RequestMapping("/photoadmin")
+    public String home(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        List<User> userList = new ArrayList<User>();
+        for(User p : userRepository.findAll()){
+            if(p.getBrukernavn() != null && p.getBrukernavn().contains(auth.getName())) {
+                userList.add(p);
+            }
+        }
+        model.addAttribute("fotograf", userList);
+        String name = auth.getName(); //get logged in username
+        System.out.println(name);
 
         return "photoadmin";
     }
@@ -66,23 +71,32 @@ public class FileUploadController {
                 .body(file);
     }
 
-    @PostMapping("/addphoto")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
+    @PostMapping("/PAAddPhoto")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("tittel") String tittel) {
 
+        String brukerid = "";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        for(User phgr : userRepository.findAll()){
+            if(phgr.getBrukernavn() != null && phgr.getBrukernavn().contains(auth.getName())) {
+                brukerid = phgr.getId();
+
+            }
+        }
+        List<Photo> photoDList = new ArrayList<Photo>();
         Photo p = new Photo();
+        System.out.println(file.getOriginalFilename());
         p.setFilnavn("/files/"+file.getOriginalFilename());
         p.setContentType(file.getContentType());
-        p.setPhotographerID("?");
         p.setDato("?");
         p.setTag("?");
-        p.setTittel("?");
+        p.setTittel(tittel);
+        p.setPhotographerID(brukerid);
+        photoRepository.save(p);
+        storageService.store(file);
+
         photoRepository.save(p);
 
-        storageService.store(file);
-        redirectAttributes.addFlashAttribute("message",
-                "Du lastet opp " + file.getOriginalFilename() + "!");
-
+        updateUser(auth.getName());
         return "redirect:photoadmin";
     }
 
@@ -100,6 +114,37 @@ public class FileUploadController {
 
     @RequestMapping(path = "/delete/{id}", method = RequestMethod.POST)
     public @ResponseBody void delete(@PathVariable("id") String id){
+        System.out.println(id);
+        Photo p = photoRepository.findOne(id);
         photoRepository.delete(id);
+        String filnavn = p.getFilnavn();
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        updateUser(auth.getName());
+        File file = new File("upload-dir/"+filnavn.replace("/files/",""));
+        file.delete();
+
+
+
+    }
+
+    public void updateUser(String curUser){
+        String brukerid="";
+        List<Photo> photoDList = new ArrayList<Photo>();
+        for(User phgr : userRepository.findAll()){
+            if(phgr.getBrukernavn() != null && phgr.getBrukernavn().contains(curUser)) {
+                brukerid = phgr.getId();
+
+            }
+            User user = userRepository.findOne(brukerid);
+            user.setPhotos(null);
+            for(Photo ph : photoRepository.findAll()){
+                if(ph.getPhotographerID() != null && ph.getPhotographerID().contains(brukerid)) {
+                    photoDList.add(ph);
+                }
+            }
+            user.setPhotos(photoDList);
+            userRepository.save(user);
+        }
     }
 }

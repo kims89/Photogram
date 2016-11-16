@@ -6,7 +6,7 @@
 </div>
 
 <div>
-    <form method="POST" enctype="multipart/form-data" action="/">
+    <form method="POST" enctype="multipart/form-data" action="/addphoto">
         <table>
             <tr><td>Velg fil som skal lastes opp:</td><td><input type="file" name="file" /></td></tr>
             <tr><td></td><td><input type="submit" value="Last opp" /></td></tr>
@@ -18,7 +18,6 @@
         <li th:each="file : ${files}">
             <img th:src="${file}" width="400" />
         </li>
-    </ul>
 
 </div>
 
