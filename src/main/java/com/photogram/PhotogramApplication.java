@@ -1,19 +1,24 @@
 package com.photogram;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.photogram.Storage.StorageService;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 public class PhotogramApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PhotogramApplication.class, args);
+		SpringApplication.run(PhotogramApplication.class, args); }
 
-
-
+	@Bean
+	CommandLineRunner init(StorageService storageService) {
+		return (args) -> {
+			storageService.deleteAll();
+			storageService.init();
+		};
 	}
+
 }

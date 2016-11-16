@@ -25,12 +25,24 @@ public class Photo {
         this.tag = tag;
     }
 
+    public Photo() {
+
+    }
+
     public String getFilnavn() {
         return filnavn;
     }
 
     public void setFilnavn(String filnavn) {
         this.filnavn = filnavn;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
     public String getId() {
