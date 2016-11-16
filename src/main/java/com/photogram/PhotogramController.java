@@ -97,7 +97,7 @@ public class PhotogramController {
         User user;
         if (brukernavn != "") {
             if (userRepository.findByBrukernavn(brukernavn) == null){
-                user = new User(fornavn, etternavn, brukernavn, passord, "ROLE_USER");
+                user = new User(fornavn, etternavn, brukernavn, passord, "ROLE_ADMIN");
                 userRepository.save(user);
 
                 System.out.println("Ny bruker opprettet med brukernavn: "+brukernavn+" og passord: "+passord);
@@ -156,10 +156,9 @@ public class PhotogramController {
         return "photoadmin";
     }
 
-    // --------------------------------------------------------->
-
-    //Endre rolle
-    //        User p = userRepository.findOne("5829f946d7a15f7b50d28245");
+// --------------------------------------------------------->
+//Endre rolle
+//        User p = userRepository.findOne("5829f946d7a15f7b50d28245");
 //        p.setRolle("ROLE_ADMIN");
 //        userRepository.save(p);
 
