@@ -83,6 +83,24 @@ public class FileUploadController {
             }
         }
 
+        File dir = new File("upload-dir");
+        if (!dir.exists()) {
+            boolean result = false;
+            System.out.println("upload-dir finnes ikke i dag");
+
+            try{
+                dir.mkdir();
+                result = true;
+            }
+            catch(SecurityException se){
+                //handle it
+            }
+            if(result) {
+                System.out.println("upload-dir opprettet");
+            }
+        }
+
+
         List<Photo> photoDList = new ArrayList<Photo>();
         Photo p = new Photo();
         System.out.println(file.getOriginalFilename());
