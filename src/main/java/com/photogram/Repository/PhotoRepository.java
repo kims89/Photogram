@@ -7,6 +7,6 @@ package com.photogram.Repository;
         import java.util.List;
 
 public interface PhotoRepository extends MongoRepository<Photo, String> {
-        public List<Photo> findAll();
+        List<Photo> findAll();
 
 }
