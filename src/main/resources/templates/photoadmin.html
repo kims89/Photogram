@@ -6,6 +6,9 @@
     <script src="http://fjos.net/js/jquery.easy-autocomplete.min.js"></script>
     <link rel="stylesheet" href="http://fjos.net/js/css/easy-autocomplete.min.css" />
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
+
     <script>
                 /*<![CDATA[*/
 
@@ -53,6 +56,35 @@
     <title>Title</title>
 </head>
 <body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4">
+            <br/>
+            <h2>Heading</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-lg-4">
+            <br/>
+            <h2>Heading</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-lg-4">
+            <br/>
+            <h2>Heading</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-lg-4">
+            <br/>
+            <h2>Heading</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+        </div>
+
+    </div>
+</div>
 <div th:each="p : ${fotograf}">
     <td th:text="${p.fornavn}"></td>
     <ul id="fotografliste">
@@ -72,6 +104,7 @@
     <input id="template-links" />
 
 </div>
+
 
 </body>
 </html>

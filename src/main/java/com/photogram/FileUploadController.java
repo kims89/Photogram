@@ -149,7 +149,6 @@ public class FileUploadController {
         for(User phgr : userRepository.findAll()){
             if(phgr.getBrukernavn() != null && phgr.getBrukernavn().contains(curUser)) {
                 brukerid = phgr.getId();
-
             }
             User user = userRepository.findOne(brukerid);
             for(Photo ph : photoRepository.findAll()){
