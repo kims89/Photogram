@@ -18,8 +18,8 @@
                     var xmlHttp = new XMLHttpRequest();
                     xmlHttp.onreadystatechange = function(){
                         if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
-                            ul = document.getElementById("fotografliste");
-                            ul.removeChild(ele.parentNode);
+                            div = document.getElementById("fotograflak");
+                            div.removeChild(ele.parentNode);
                         }
                     };
 
@@ -57,52 +57,24 @@
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <div class="col-lg-4">
+    <div th:each="p : ${fotograf}" class="row" id="fotograflak">
+        <div class="col-lg-4" th:each="photo : ${p.photo}" th:id="${photo.id}">
             <br/>
-            <h2>Heading</h2>
+            <img th:src="${photo.filnavn}" width="350" />
+            <h2 th:text="${photo.tittel}"></h2>
             <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
-        </div>
-        <div class="col-lg-4">
-            <br/>
-            <h2>Heading</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
-        </div>
-        <div class="col-lg-4">
-            <br/>
-            <h2>Heading</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
-        </div>
-        <div class="col-lg-4">
-            <br/>
-            <h2>Heading</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
+            <button class="btn btn-primary" onClick="deleteBildefil(this);">Slett bilde</button>
         </div>
 
     </div>
 </div>
-<div th:each="p : ${fotograf}">
-    <td th:text="${p.fornavn}"></td>
-    <ul id="fotografliste">
-        <li th:each="photo : ${p.photo}" th:id="${photo.id}">
-            <td th:text="${photo.tittel}"></td>
-            <img th:src="${photo.filnavn}" width="400" />
-            <button onClick="deleteBildefil(this);">Slett bilde</button>
-        </li>
+<div>
+    <input id="template-links" placeholder="Søk" />
     <form action="/PAAddPhoto" enctype="multipart/form-data" method="POST">
         <input type="file" name="file" /><br />
         <input type="text" id="filnavn" name="tittel" /><br />
         <input type="submit" value="Legg til"/>
     </form>
-    </ul>
-</div>
-<div>
-    <input id="template-links" />
-
 </div>
 
 
