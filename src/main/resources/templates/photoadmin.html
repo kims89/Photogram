@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous"/>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
 
+
+
     <script>
                 /*<![CDATA[*/
 
@@ -56,11 +58,15 @@
     <title>Title</title>
 </head>
 <body>
-<form action="/PAAddPhoto" enctype="multipart/form-data" method="POST">
-    <input type="file" name="file" /><br />
-    <input type="text" id="filnavn" name="tittel" /><br />
-    <input type="submit" value="Legg til"/>
-</form>
+<div class="container">
+    <form id="data">
+        User Name: <input type="text" name="tittel" id="tittel" value="" /><br />
+        Bilde: <input name="bild" id="bild" type="file" /><br />
+        <input type="submit" value="Submit"/>
+    </form>
+</div>
+
+
 <div class="container">
     <div th:each="p : ${fotograf}" class="row" id="fotograflak">
         <div class="col-lg-4" th:each="photo : ${p.photo}" th:id="${photo.id}">
@@ -78,6 +84,40 @@
     <input id="template-links" placeholder="Søk" />
 </div>
 
+<script>
+    /*<![CDATA[*/
+
+    //Program a custom submit function for the form
+    $("form#data").submit(function(event){
+        //disable the default form submission
+        event.preventDefault();
+        var tittel = $( "#tittel" ).val();
+        bilde = document.getElementById("bild").files[0].name
+
+        //grab all form data
+        var formData = new FormData($(this)[0]);
+        $.ajax({
+
+            url: '/PAAddPhoto',
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (returndata) {
+                $("#fotograflak").append(bilde+"<div class='col-lg-4'><br/>" +
+                        "<h2>"+tittel+"</h2>" +
+                        "<p><small>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </small></p>" +
+                        "            <button class='btn btn-danger btn-sm' onClick='deleteBildefil(this)'>Slett</button>" +
+                        "<button class='btn btn-warning btn-sm' onClick=''>Endre</button></div>");
+            }
+        });
+        return false;
+    });
+
+    /*]]>*/
+</script>
 
 </body>
 </html>
