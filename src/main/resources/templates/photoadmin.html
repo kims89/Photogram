@@ -58,9 +58,17 @@
 <body>
 <div class="container">
     <div th:each="p : ${fotograf}" class="row" id="fotograflak">
+        <div class="col-lg-4">
+            <br/>
+            <form action="/PAAddPhoto" enctype="multipart/form-data" method="POST">
+                <input type="file" name="file" /><br />
+                <input type="text" id="filnavn" name="tittel" /><br />
+                <input type="submit" value="Legg til"/>
+            </form>
+        </div>
         <div class="col-lg-4" th:each="photo : ${p.photo}" th:id="${photo.id}">
             <br/>
-            <img th:src="${photo.filnavn}" width="350" />
+            <img th:src="${photo.filnavn}" class="media-object" width="350" />
             <h2 th:text="${photo.tittel}"></h2>
             <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
             <button class="btn btn-primary" onClick="deleteBildefil(this);">Slett bilde</button>
@@ -70,11 +78,6 @@
 </div>
 <div>
     <input id="template-links" placeholder="Søk" />
-    <form action="/PAAddPhoto" enctype="multipart/form-data" method="POST">
-        <input type="file" name="file" /><br />
-        <input type="text" id="filnavn" name="tittel" /><br />
-        <input type="submit" value="Legg til"/>
-    </form>
 </div>
 
 
