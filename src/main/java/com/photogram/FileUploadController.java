@@ -83,25 +83,11 @@ public class FileUploadController {
             }
         }
 
-        File dir = new File("upload-dir");
-        if (!dir.exists()) {
-            boolean result = false;
-            System.out.println("upload-dir finnes ikke i dag");
-
-            try{
-                dir.mkdir();
-                result = true;
-            }
-            catch(SecurityException se){
-                //handle it
-            }
-            if(result) {
-                System.out.println("upload-dir opprettet");
-            }
-        }
+        makeFolder();
 
 
         List<Photo> photoDList = new ArrayList<Photo>();
+
         Photo p = new Photo();
         System.out.println(file.getOriginalFilename());
         p.setFilnavn("/files/"+file.getOriginalFilename());
@@ -110,19 +96,21 @@ public class FileUploadController {
         p.setTag("?");
         p.setTittel(tittel);
         p.setPhotographerID(brukerid);
-        photoRepository.save(p);
-        storageService.store(file);
+        if(file.getContentType().contains("image")){
+            photoRepository.save(p);
+            storageService.store(file);
 
-        photoRepository.save(p);
-
-        User user = userRepository.findOne(brukerid);
-        for(Photo ph : photoRepository.findAll()){
-            if(ph.getPhotographerID() != null && ph.getPhotographerID().contains(brukerid)) {
-                photoDList.add(ph);
+            photoRepository.save(p);
+            User user = userRepository.findOne(brukerid);
+            for(Photo ph : photoRepository.findAll()){
+                if(ph.getPhotographerID() != null && ph.getPhotographerID().contains(brukerid)) {
+                    photoDList.add(ph);
+                }
             }
+            user.setPhotos(photoDList);
+            userRepository.save(user);
         }
-        user.setPhotos(photoDList);
-        userRepository.save(user);
+
 
         return "redirect:photoadmin";
     }
@@ -171,6 +159,24 @@ public class FileUploadController {
             }
             user.setPhotos(photoDList);
             userRepository.save(user);
+        }
+    }
+    public void makeFolder(){
+        File dir = new File("upload-dir");
+        if (!dir.exists()) {
+            boolean result = false;
+            System.out.println("upload-dir finnes ikke i dag");
+
+            try{
+                dir.mkdir();
+                result = true;
+            }
+            catch(SecurityException se){
+                //handle it
+            }
+            if(result) {
+                System.out.println("upload-dir opprettet");
+            }
         }
     }
 }
