@@ -91,11 +91,11 @@
 
 
 <div class="container">
-    <div th:each="p : ${fotograf}" class="row" id="fotograflak">
-        <div class="col-lg-4" th:each="photo : ${p.photo}" th:id="${photo.id}">
+    <div class="row" id="fotograflak">
+        <div class="col-lg-4" th:each="p : ${photo}" th:id="${p.id}">
             <br/>
-            <img th:src="${photo.filnavn}" class="media-object" width="350" />
-            <h2 th:text="${photo.tittel}"></h2>
+            <img th:src="${p.filnavn}" class="media-object" width="350" />
+            <h2 th:text="${p.tittel}"></h2>
 
             <button class="btn btn-danger btn-sm" onClick="deleteBildefil(this);">Slett bilde</button>
             <button class="btn btn-warning btn-sm" onClick="">Endre</button>

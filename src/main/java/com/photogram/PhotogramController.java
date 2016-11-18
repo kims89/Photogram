@@ -105,9 +105,11 @@ public class PhotogramController {
 
     @RequestMapping(value="photographer/{id}", method = RequestMethod.GET)
     public String home( Model model,@PathVariable String id) {
-        List<User> userList = new ArrayList<User>();
-        userList.add(userRepository.findOne(id));
-        model.addAttribute("fotograf", userList);
+        List<Photo> photoList = new ArrayList<Photo>();
+        for(Photo ph : photoRepository.findByphotographerID(id)){
+            photoList.add(ph);
+        }
+        model.addAttribute("photo", photoList);
 
         return "photoadmin";
     }

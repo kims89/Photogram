@@ -8,5 +8,4 @@ package com.photogram.Repository;
 public interface UserRepository extends MongoRepository<User, String> {
         User findByBrukernavn(String brukernavn);
 
-
 }

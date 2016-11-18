@@ -16,14 +16,11 @@ public class User {
     String brukernavn;
     String passord;
     String rolle;
-    List<Photo> photo;
 
     public User(String fornavn, String etternavn, String brukernavn, String passord, String rolle) {
-        this.id = id;
         this.rolle = rolle;
         this.fornavn = fornavn;
         this.etternavn = etternavn;
-        this.photo = photo;
         this.brukernavn = brukernavn;
         this.passord = passord;
     }
@@ -46,14 +43,6 @@ public class User {
 
     public void setEtternavn(String etternavn) {
         this.etternavn = etternavn;
-    }
-
-    public List<Photo> getPhoto() {
-        return photo;
-    }
-
-    public void setPhotos(List<Photo> photo) {
-        this.photo = photo;
     }
 
     public String getBrukernavn() {

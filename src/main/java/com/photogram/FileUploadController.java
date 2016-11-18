@@ -46,16 +46,17 @@ public class FileUploadController {
 
     @RequestMapping("/photoadmin")
     public String home(Model model) {
+
+        String brukerid = "";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        List<User> userList = new ArrayList<User>();
-        for(User p : userRepository.findAll()){
-            if(p.getBrukernavn() != null && p.getBrukernavn().contains(auth.getName())) {
-                userList.add(p);
+        User u = userRepository.findByBrukernavn(auth.getName());
+        List<Photo> photoList = new ArrayList<Photo>();
+        for(Photo ph : photoRepository.findAll()){
+            if(ph.getPhotographerID() != null && ph.getPhotographerID().contains(u.getId())) {
+                photoList.add(ph);
             }
         }
-        model.addAttribute("fotograf", userList);
-        String name = auth.getName(); //get logged in username
-        System.out.println(name);
+        model.addAttribute("photo", photoList);
 
         return "photoadmin";
     }
@@ -107,8 +108,6 @@ public class FileUploadController {
                     photoDList.add(ph);
                 }
             }
-            user.setPhotos(photoDList);
-            userRepository.save(user);
         }
 
 
@@ -135,7 +134,6 @@ public class FileUploadController {
         String filnavn = p.getFilnavn();
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        updateUser(auth.getName());
         File file = new File("upload-dir/"+filnavn.replace("/files/",""));
         file.delete();
 
@@ -143,23 +141,6 @@ public class FileUploadController {
 
     }
 
-    public void updateUser(String curUser){
-        String brukerid="";
-        List<Photo> photoDList = new ArrayList<Photo>();
-        for(User phgr : userRepository.findAll()){
-            if(phgr.getBrukernavn() != null && phgr.getBrukernavn().contains(curUser)) {
-                brukerid = phgr.getId();
-            }
-            User user = userRepository.findOne(brukerid);
-            for(Photo ph : photoRepository.findAll()){
-                if(ph.getPhotographerID() != null && ph.getPhotographerID().contains(brukerid)) {
-                    photoDList.add(ph);
-                }
-            }
-            user.setPhotos(photoDList);
-            userRepository.save(user);
-        }
-    }
     public void makeFolder(){
         File dir = new File("upload-dir");
         if (!dir.exists()) {
