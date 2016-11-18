@@ -58,6 +58,19 @@
     <title>Title</title>
 </head>
 <body>
+
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+        <h1>Hello, Kim!</h1>
+        <div class="alert alert-success" role="alert">Her kan du legge inn inn bilder med tagg og info.</div>
+        <p><input id="template-links" placeholder="Søk" /></p>
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">KNAPP &raquo;</a>
+        <a class="btn btn-primary btn-lg" href="#" role="button">KNAPP &raquo;</a></p>
+    </div>
+</div>
+
 <div class="container">
     <form id="data">
         User Name: <input type="text" name="tittel" id="tittel" value="" /><br />
@@ -80,10 +93,6 @@
 
     </div>
 </div>
-<div>
-    <input id="template-links" placeholder="Søk" />
-</div>
-
 <script>
     /*<![CDATA[*/
 
@@ -92,7 +101,7 @@
         //disable the default form submission
         event.preventDefault();
         var tittel = $( "#tittel" ).val();
-        bilde = document.getElementById("bild").files[0].name
+        bilde = document.getElementById("bild").files[0].name;
 
         //grab all form data
         var formData = new FormData($(this)[0]);
@@ -106,11 +115,10 @@
             contentType: false,
             processData: false,
             success: function (returndata) {
-                $("#fotograflak").append(bilde+"<div class='col-lg-4'><br/>" +
+                $("#fotograflak").append("<div class='col-lg-4'><br/><img src='/files/"+bilde+"' class='media-object' width='350' />" +
                         "<h2>"+tittel+"</h2>" +
                         "<p><small>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </small></p>" +
-                        "            <button class='btn btn-danger btn-sm' onClick='deleteBildefil(this)'>Slett</button>" +
-                        "<button class='btn btn-warning btn-sm' onClick=''>Endre</button></div>");
+                        "<div class='alert alert-warning' role='alert'><a href='/photoadmin' class='alert-link'>Oppdater</a> for å slette og endre</div></div>");
             }
         });
         return false;
