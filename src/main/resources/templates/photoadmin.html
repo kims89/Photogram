@@ -79,11 +79,14 @@
 </div>
 
 <div class="container">
+    <div class="form-group">
     <form id="data">
-        User Name: <input type="text" name="tittel" id="tittel" value="" /><br />
-        Bilde: <input name="bild" id="bild" type="file" /><br />
+        <label>Tittel</label>
+        <input type="text" name="tittel" id="tittel" value="" /><br />
+        <input name="bild" id="bild" type="file" /><br />
         <input type="submit" value="Submit"/>
     </form>
+    </div>
 </div>
 
 
@@ -93,7 +96,7 @@
             <br/>
             <img th:src="${photo.filnavn}" class="media-object" width="350" />
             <h2 th:text="${photo.tittel}"></h2>
-            <p><small>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </small></p>
+
             <button class="btn btn-danger btn-sm" onClick="deleteBildefil(this);">Slett bilde</button>
             <button class="btn btn-warning btn-sm" onClick="">Endre</button>
         </div>
@@ -130,6 +133,9 @@
                         "<h2>"+tittel+"</h2>" +
                         "<p><small>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </small></p>" +
                         "<div class='alert alert-warning' role='alert'><a href='/photoadmin' class='alert-link'>Oppdater</a> for å slette og endre</div></div>");
+            },
+            error: function() {
+                alert('Error!');
             }
         });
         return false;
