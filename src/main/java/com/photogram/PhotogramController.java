@@ -86,25 +86,19 @@ public class PhotogramController {
 
     }
 
-    @RequestMapping(value="foto/{name}", method = RequestMethod.GET)
-    public List getUserInJSON(@PathVariable String name) {
-        List<Search> personLiswt = new ArrayList<>();
-        for(Photo ph : photoRepository.findAll()){
-            personLiswt.add(new Search(ph.getTittel(),"/photo/"+ph.getId()));
-        }
+    @RequestMapping(value="photo/{id}", method = RequestMethod.GET)
+    public String phohome( Model model,@PathVariable String id) {
+        List<Photo> photoList = new ArrayList<Photo>();
+        Photo ph=photoRepository.findOne(id);
+        photoList.add(ph);
+        model.addAttribute("photo", photoList);
 
-        for(User us : userRepository.findAll()){
-            if(us.getRolle() != null && us.getRolle().contains("ROLE_ADMIN")) {
-                personLiswt.add(new Search(us.getBrukernavn(),"/photographer/"+us.getId()));
-            }
-        }
-
-        return personLiswt;
-
+        return "photoadmin";
     }
 
+
     @RequestMapping(value="photographer/{id}", method = RequestMethod.GET)
-    public String home( Model model,@PathVariable String id) {
+    public String photographhome( Model model,@PathVariable String id) {
         List<Photo> photoList = new ArrayList<Photo>();
         for(Photo ph : photoRepository.findByphotographerID(id)){
             photoList.add(ph);

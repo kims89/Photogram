@@ -10,5 +10,4 @@ package com.photogram.Repository;
 public interface PhotoRepository extends MongoRepository<Photo, String> {
         List<Photo> findByphotographerID(String photographerID);
 
-
 }
