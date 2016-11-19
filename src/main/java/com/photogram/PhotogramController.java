@@ -21,33 +21,14 @@ public class PhotogramController {
     PhotoRepository photoRepository;
 
 
-
-    @RequestMapping(path = "/user", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    List<User> getPhotographerJson() {
-        System.out.println("Spør etter JSON");
-        return userRepository.findAll();
-    }
-
-
-
-    @RequestMapping(path = "/photo", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    List<Photo> getPhotoJson() {
-        System.out.println("Spør etter JSON");
-        return photoRepository.findAll();
-    }
-
     //Denne requestmappingen gir tilgang til loginsiden.
     @RequestMapping("/login")
     public String login(){
-        return "login";
+        return "/login";
     }
 
     //metode som lar lærer opprette brukere i mongoDB til innlogging i handleliste
-    @RequestMapping(value="/NewPhotographer", method = RequestMethod.POST)
+    @RequestMapping(value="/NewUser", method = RequestMethod.POST)
     public String nyBruker(@RequestParam(value = "fornavn") String fornavn, @RequestParam(value = "etternavn") String etternavn,
                            @RequestParam(value = "brukernavn") String brukernavn, @RequestParam("passord") String passord){
         User user;
@@ -71,18 +52,18 @@ public class PhotogramController {
 
     @RequestMapping(value="/sok", method = RequestMethod.GET)
     public @ResponseBody List getSearchInJSON() {
-        List<Search> personLiswt = new ArrayList<>();
+        List<Search> sokList = new ArrayList<>();
         for(Photo ph : photoRepository.findAll()){
-            personLiswt.add(new Search(ph.getTittel(),"/photo/"+ph.getId()));
+            sokList.add(new Search(ph.getTittel()+" (Bilde)","/photo/"+ph.getId()));
         }
 
         for(User us : userRepository.findAll()){
             if(us.getRolle() != null && us.getRolle().contains("ROLE_ADMIN")) {
-                personLiswt.add(new Search(us.getBrukernavn(),"/photographer/"+us.getId()));
+                sokList.add(new Search(us.getBrukernavn()+" (Fotograf)","/photographer/"+us.getId()));
             }
         }
 
-        return personLiswt;
+        return sokList;
 
     }
 
