@@ -76,25 +76,21 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
     <div class="container">
-        <h1>Hello, Kim!</h1>
-        <div class="alert alert-success" role="alert">Her kan du legge inn inn bilder med tagg og info.</div>
-        <p><input id="template-links" placeholder="Søk" /></p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">KNAPP &raquo;</a>
-        <a class="btn btn-primary btn-lg" href="#" role="button">KNAPP &raquo;</a></p>
+        <h1>Fotograf</h1>
+        <div class="alert alert-success" role="alert">Her kan du enkelt legge ut bilder med metadata.</div>
+        <div class="row">
+            <div class="col-md-4">
+                <form id="data">
+                    <div class="form-group"><input type="text" class="form-control" name="tittel" id="tittel" placeholder="Tittel" /></div>
+                    <div class="form-group"><input type="text" class="form-control" name="dato" id="dato" placeholder="Dato" /></div>
+                    <div class="form-group"><input type="text" class="form-control" name="tag" id="tag" placeholder="#Tagg" /></div>
+                    <p><div class="form-group"><label class="btn btn-default btn-file">Last opp foto<input name="bild" id="bild" type="file" style="display: none;" /></label>
+                   <input class="btn btn-primary" type="submit" value="Publiser"/></div></p>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
-
-<div class="container">
-    <div class="form-group">
-    <form id="data">
-        <label>Tittel</label>
-        <input type="text" name="tittel" id="tittel" value="" /><br />
-        <input name="bild" id="bild" type="file" /><br />
-        <input type="submit" value="Submit"/>
-    </form>
-    </div>
-</div>
-
 
 <div class="container">
     <div class="row" id="fotograflak">
@@ -150,5 +146,10 @@
     /*]]>*/
 </script>
 &nbsp;
+<div class="container">
+    <p><input id="template-links" placeholder="Søk" /></p>
+    <p><a class="btn btn-primary btn-lg" href="#" role="button">KNAPP &raquo;</a>
+        <a class="btn btn-primary btn-lg" href="#" role="button">KNAPP &raquo;</a></p>
+</div>
 </body>
 </html>

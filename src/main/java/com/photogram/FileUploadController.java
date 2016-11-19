@@ -73,7 +73,8 @@ public class FileUploadController {
     }
 
     @PostMapping("/PAAddPhoto")
-    public String handleFileUpload(@RequestParam("bild") MultipartFile file, @RequestParam("tittel") String tittel) {
+    public String handleFileUpload(@RequestParam("bild") MultipartFile file, @RequestParam("tittel") String tittel,
+                                   @RequestParam("dato") String dato,@RequestParam("tag") String tag) {
 
         String brukerid = "";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
