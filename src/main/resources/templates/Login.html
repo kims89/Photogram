@@ -2,24 +2,42 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:width="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Title</title>
+
+    <meta id="token" name="_csrf" th:content="${_csrf.token}"/>
+    <meta id="headerName" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+
+    <script src="/res/jquery-3.1.1.min.js"></script>
+    <script src="/res/jquery.easy-autocomplete.js"></script>
+    <link rel="stylesheet" href="/res/easy-autocomplete.min.css" />
+
+    <script src="/res/tether.min.js"></script><!-- Tether for Bootstrap. Nødvendig for at Bootstrap skal fungere optimalt -->
+    <link rel="stylesheet" href="/res/bootstrap.css"/>
+    <script src="/res/bootstrap.js" ></script>
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="/res/signin.css"/>
+
+
 </head>
 <body>
-<form th:action="@{/NewUser}" method="post">
-    <h3 class="font">  Her kan du opprette ny bruker med passord,
-        dette er lagt til for enkelhets skyld  </h3>
-    <div><input type="text" placeholder="fornavn" name="fornavn"/></div>
-    <div><input type="text" placeholder="etternavn" name="etternavn"/></div>
-    <div><input type="text" placeholder="Nytt Brukernavn" name="brukernavn"/></div>
-    <div><input type="password" name="passord" placeholder="Nytt Passord"/></div>
-    <div><input type="submit" value="Opprett" class="button"/></div>
-</form>
-<br/>
-<form th:action="@{/login}" method="post">
-    <div><input type="text" placeholder="Brukernavn" name="username"/></div>
-    <div><input type="password" placeholder="Passord" name="password"/></div>
-    <div><input type="submit" value="Logg inn" class="button"/></div>
-</form>
+<div class="container">
+    <form th:action="@{/NewUser}" method="post" class="form-signin">
+        <h2 class="form-signin-heading">Opprett bruker</h2>
+        <div><input type="text" placeholder="Fornavn" name="fornavn" class="form-control"/></div>
+        <div><input type="text" placeholder="Etternavn" name="etternavn" class="form-control"/></div>
+        <div><input type="text" placeholder="Brukernavn" name="brukernavn" class="form-control"/></div>
+        <div><input type="password" name="passord" placeholder="Passord" class="form-control"/></div>
+        <div><input type="submit" value="Opprett" class="btn btn-lg btn-primary btn-block"/></div>
+    </form>
+    <br/>
+    <form th:action="@{/login}" method="post" class="form-signin">
+        <h2 class="form-signin-heading">Logg inn</h2>
+        <div><input type="text" placeholder="Brukernavn" name="username" class="form-control"/></div>
+        <div><input type="password" placeholder="Passord" name="password" class="form-control"/></div>
+        <div><input type="submit" value="Logg inn" class="btn btn-lg btn-primary btn-block"/></div>
+    </form>
+</div>
 
 </body>
 </html>
