@@ -89,13 +89,12 @@ public class FileUploadController {
 
 
         List<Photo> photoDList = new ArrayList<Photo>();
-
         Photo p = new Photo();
         System.out.println(file.getOriginalFilename());
         p.setFilnavn("/files/"+file.getOriginalFilename());
         p.setContentType(file.getContentType());
-        p.setDato("?");
-        p.setTag("?");
+        p.setDato(dato);
+        p.setTag("#test");
         p.setTittel(tittel);
         p.setPhotographerID(brukerid);
         if(file.getContentType().contains("image")){
@@ -115,16 +114,21 @@ public class FileUploadController {
         return "redirect:photoadmin";
     }
 
+    @PostMapping("/PAChangePhoto")
+    public String handleChange(@RequestParam("id-input") String id,@RequestParam("tittel-input") String tittel,
+                                   @RequestParam("dato-input") String dato) {
+        Photo p = photoRepository.findOne(id);
+        p.setTittel(tittel);
+        p.setDato(dato);
+        photoRepository.save(p);
+
+        return "redirect:photoadmin";
+    }
+
+
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity handleStorageFileNotFound(StorageFileNotFoundException exc) {
         return ResponseEntity.notFound().build();
-    }
-
-    @RequestMapping(path = "/list")
-    public String visAlle(ModelMap map){
-        List<Photo> filList = photoRepository.findAll();
-        map.addAttribute("liste", filList);
-        return "list";
     }
 
     @RequestMapping(path = "/delete/{id}", method = RequestMethod.POST)
@@ -134,7 +138,6 @@ public class FileUploadController {
         photoRepository.delete(id);
         String filnavn = p.getFilnavn();
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         File file = new File("upload-dir/"+filnavn.replace("/files/",""));
         file.delete();
 

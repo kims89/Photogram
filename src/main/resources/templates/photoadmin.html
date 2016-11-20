@@ -5,6 +5,7 @@
     <meta id="token" name="_csrf" th:content="${_csrf.token}"/>
     <meta id="headerName" name="_csrf_header" th:content="${_csrf.headerName}"/>
 
+
     <script src="/res/jquery-3.1.1.min.js"></script>
     <script src="/res/jquery.easy-autocomplete.js"></script>
     <link rel="stylesheet" href="/res/easy-autocomplete.min.css" />
@@ -22,6 +23,7 @@
                     $( "#refreshSite" ).load( "/photoadmin" );
 
                 }
+
 
                 function deleteBildefil(ele){
                     var parentId = ele.parentNode.id;
@@ -75,6 +77,28 @@
     <title>Title</title>
 </head>
 <body>
+
+<!-- Fixed navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Bootstrap theme</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><p><input id="template-links" placeholder="Søk" /></p></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
 <div id="refreshSite">
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
@@ -101,9 +125,21 @@
             <br/>
             <img th:src="${p.filnavn}" class="media-object" width="350" />
             <h2 th:text="${p.tittel}"></h2>
-
+            <p class="lead" th:text="${p.dato}"/>
+            <ol class="breadcrumb">
+                <li>Tagg#</li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Library</a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Library</a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Library</a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Library</a></li>
+            </ol>
             <button class="btn btn-danger btn-sm" onClick="deleteBildefil(this);">Slett bilde</button>
-            <button class="btn btn-warning btn-sm" onClick="">Endre</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" th:attr="data-tittel=${p.tittel},data-iden=${p.id},data-dato=${p.dato}">Endre</button>
+
         </div>
 
     </div>
@@ -116,6 +152,7 @@
         //disable the default form submission
         event.preventDefault();
         var tittel = $( "#tittel" ).val();
+        var dato = $( "#dato" ).val();
         bilde = document.getElementById("bild").files[0].name;
 
         //grab all form data
@@ -135,8 +172,8 @@
             processData: false,
             success: function (returndata) {
                 $("#fotograflak").append("<div class='col-lg-4'><br/><img src='/files/"+bilde+"' class='media-object' width='350' />" +
-                        "<h2>"+tittel+"</h2>" +
-                        "<p><small>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </small></p>" +
+                        "<h2>"+tittel+" <span class='label label-success'>Ny!</span></h2>" +
+                        "<p class='lead' >"+dato+"</p>" +
                         "<div class='alert alert-warning' role='alert'><a onclick='refreshSite()' class='alert-link'>Oppdater</a> for å slette og endre</div></div>");
             },
             error: function() {
@@ -146,14 +183,96 @@
         return false;
     });
 
+
     /*]]>*/
 </script>
 &nbsp;
-<div class="container">
-    <p><input id="template-links" placeholder="Søk" /></p>
-    <p><a class="btn btn-primary btn-lg" href="#" role="button">KNAPP &raquo;</a>
-        <a class="btn btn-primary btn-lg" href="#" role="button">KNAPP &raquo;</a></p>
 </div>
+<div class="bd-example">
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">New message</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="popupform">
+                        <div class="form-group"><div class="modal-id">
+                            <label class="control-label">Foto id:</label>
+                            <input type="text" class="form-control" name="id-input" id="id-input" disabled=""/>
+                            </div></div>
+                        <label class="control-label">Tittel:</label>
+                        <div class="form-group"><div class="modal-tittel">
+                            <input type="text" class="form-control" name="tittel-input" id="tittel-input"/>
+                            </div></div>
+                        <label class="control-label">Dato:</label>
+                        <div class="form-group"><div class="modal-dato">
+                                <input type="text" class="form-control" name="dato-input" id="dato-input"/>
+                            </div></div>
+                        <button type="submit" class="btn btn-primary">Endre</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<script>
+    /*<![CDATA[*/
+
+    $("form#popupform").submit(function(event){
+        //disable the default form submission
+        event.preventDefault();
+        //grab all form data
+        var formData = new FormData($(this)[0]);
+        $.ajax({
+
+            url: '/PAChangePhoto',
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-Token': $('meta[name="_csrf"]').attr('content'),
+                'X-CSRF-headerName': $('meta[name="_csrf_header"]').attr('content')
+            },
+            processData: false,
+            success: function (returndata) {
+
+            },
+            error: function() {
+                alert('Error!');
+            }
+        });
+        return false;
+    });
+    /*]]>*/
+</script>
+
+<script>
+    /*<![CDATA[*/
+
+    $('#exampleModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var id = button.data('iden');
+        var dato = button.data('dato');
+        var tittel = button.data('tittel'); // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this);
+        modal.find('.modal-title').text('Rediger ' + tittel);
+        modal.find('.modal-tittel input').val(tittel);
+        modal.find('.modal-id input').val(id);
+        modal.find('.modal-dato input').val(dato);
+
+    });
+    /*]]>*/
+</script>
 </body>
 </html>
