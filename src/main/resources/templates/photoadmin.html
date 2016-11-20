@@ -24,6 +24,25 @@
 
                 }
 
+                function Endre() {
+                    var id = document.getElementById("iid").value;
+                    var tittel = document.getElementById("itittel").value;
+                    var dato = document.getElementById("idato").value;
+                    var token = document.getElementById("token").getAttribute("content");
+                    var headerName = document.getElementById("headerName").getAttribute("content");
+                    var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.onreadystatechange = function () {
+                        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                            console.log();
+                            location.reload();
+                        }
+                    };
+                    xmlHttp.open("POST", "/PAChangePhoto", true);
+                    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xmlHttp.setRequestHeader(headerName, token);
+                    xmlHttp.send("iid="+id+"&itittel="+tittel+"&idato="+dato);
+                }
+
 
                 function deleteBildefil(ele){
                     var parentId = ele.parentNode.id;
@@ -199,23 +218,20 @@
                     <h4 class="modal-title" id="exampleModalLabel">New message</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="popupform">
-                        <div class="form-group"><div class="modal-id">
-                            <label class="control-label">Foto id:</label>
-                            <input type="text" class="form-control" name="id-input" id="id-input" disabled=""/>
-                            </div></div>
+                        <div class="modal-id">
+                            <input type="hidden" name="iid" id="iid" />
+                        </div>
                         <label class="control-label">Tittel:</label>
                         <div class="form-group"><div class="modal-tittel">
-                            <input type="text" class="form-control" name="tittel-input" id="tittel-input"/>
+                            <input type="text" class="form-control" name="itittel" id="itittel"/>
                             </div></div>
                         <label class="control-label">Dato:</label>
                         <div class="form-group"><div class="modal-dato">
-                                <input type="text" class="form-control" name="dato-input" id="dato-input"/>
+                                <input type="text" class="form-control" name="idato" id="idato"/>
                             </div></div>
-                        <button type="submit" class="btn btn-primary">Endre</button>
-                    </form>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" onclick="Endre()" class="btn btn-primary">Endre</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
                 </div>
             </div>
@@ -225,33 +241,9 @@
 <script>
     /*<![CDATA[*/
 
-    $("form#popupform").submit(function(event){
-        //disable the default form submission
-        event.preventDefault();
-        //grab all form data
-        var formData = new FormData($(this)[0]);
-        $.ajax({
 
-            url: '/PAChangePhoto',
-            type: 'POST',
-            data: formData,
-            async: false,
-            cache: false,
-            contentType: false,
-            headers: {
-                'X-CSRF-Token': $('meta[name="_csrf"]').attr('content'),
-                'X-CSRF-headerName': $('meta[name="_csrf_header"]').attr('content')
-            },
-            processData: false,
-            success: function (returndata) {
 
-            },
-            error: function() {
-                alert('Error!');
-            }
-        });
-        return false;
-    });
+
     /*]]>*/
 </script>
 

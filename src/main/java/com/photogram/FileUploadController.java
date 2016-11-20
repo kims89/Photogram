@@ -114,9 +114,10 @@ public class FileUploadController {
         return "redirect:photoadmin";
     }
 
+
+
     @PostMapping("/PAChangePhoto")
-    public String handleChange(@RequestParam("id-input") String id,@RequestParam("tittel-input") String tittel,
-                                   @RequestParam("dato-input") String dato) {
+    public String handleChange(@RequestParam("iid") String id,@RequestParam("itittel") String tittel, @RequestParam("idato") String dato) {
         Photo p = photoRepository.findOne(id);
         p.setTittel(tittel);
         p.setDato(dato);

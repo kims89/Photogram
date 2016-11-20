@@ -67,7 +67,7 @@ public class PhotogramController {
 
     }
 
-    @RequestMapping(value="photo/{id}", method = RequestMethod.GET)
+    @RequestMapping(value="photo/{id}",method = RequestMethod.GET)
     public String phohome( Model model,@PathVariable String id) {
         List<Photo> photoList = new ArrayList<Photo>();
         Photo ph=photoRepository.findOne(id);
