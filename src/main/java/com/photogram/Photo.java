@@ -13,14 +13,16 @@ public class Photo {
     String contentType;
     String tittel;
     String dato;
+    String beskrivelse;
     String tag;
     String photographerID;
 
 
-    public Photo(String filnavn, String contentType, String tittel, String dato, String tag) {
+    public Photo(String filnavn, String contentType, String tittel, String beskrivelse, String dato, String tag) {
         this.filnavn = filnavn;
         this.contentType = contentType;
         this.tittel = tittel;
+        this.beskrivelse = beskrivelse;
         this.dato = dato;
         this.tag = tag;
     }
@@ -56,6 +58,14 @@ public class Photo {
 
     public void setTittel(String tittel) {
         this.tittel = tittel;
+    }
+
+    public String getBeskrivelse() {
+        return beskrivelse;
+    }
+
+    public void setBeskrivelse(String beskrivelse) {
+        this.beskrivelse = beskrivelse;
     }
 
     public String getDato() {

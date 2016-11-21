@@ -74,7 +74,7 @@ public class FileUploadController {
 
     @PostMapping("/PAAddPhoto")
     public String handleFileUpload(@RequestParam("bild") MultipartFile file, @RequestParam("tittel") String tittel,
-                                   @RequestParam("dato") String dato,@RequestParam("tag") String tag) {
+                                   @RequestParam("dato") String dato, @RequestParam ("beskrivelse") String beskrivelse, @RequestParam("tag") String tag) {
 
         String brukerid = "";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -92,6 +92,7 @@ public class FileUploadController {
         p.setFilnavn("/files/"+file.getOriginalFilename());
         p.setContentType(file.getContentType());
         p.setDato(dato);
+        p.setBeskrivelse(beskrivelse);
         p.setTag("#test");
         p.setTittel(tittel);
         p.setPhotographerID(brukerid);
@@ -115,9 +116,10 @@ public class FileUploadController {
 
 
     @PostMapping("/PAChangePhoto")
-    public String handleChange(@RequestParam("iid") String id,@RequestParam("itittel") String tittel, @RequestParam("idato") String dato) {
+    public String handleChange(@RequestParam("iid") String id,@RequestParam("itittel") String tittel,@RequestParam("ibeskrivelse") String beskrivelse, @RequestParam("idato") String dato) {
         Photo p = photoRepository.findOne(id);
         p.setTittel(tittel);
+        p.setBeskrivelse(beskrivelse);
         p.setDato(dato);
         photoRepository.save(p);
 

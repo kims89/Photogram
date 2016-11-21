@@ -27,6 +27,7 @@
                 function Endre() {
                     var id = document.getElementById("iid").value;
                     var tittel = document.getElementById("itittel").value;
+                    var beskrivelse = document.getElementById("ibeskrivelse").value;
                     var dato = document.getElementById("idato").value;
                     var token = document.getElementById("token").getAttribute("content");
                     var headerName = document.getElementById("headerName").getAttribute("content");
@@ -40,7 +41,7 @@
                     xmlHttp.open("POST", "/PAChangePhoto", true);
                     xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xmlHttp.setRequestHeader(headerName, token);
-                    xmlHttp.send("iid="+id+"&itittel="+tittel+"&idato="+dato);
+                    xmlHttp.send("iid="+id+"&itittel="+tittel+"&ibeskrivelse="+beskrivelse+"&idato="+dato);
                 }
 
 
@@ -128,6 +129,7 @@
             <div class="col-md-4">
                 <form id="data">
                     <div class="form-group"><input type="text" class="form-control" name="tittel" id="tittel" placeholder="Tittel" /></div>
+                    <div class="form-group"><input type="text" class="form-control" name="beskrivelse" id="beskrivelse" placeholder="Beskrivelse" /></div>
                     <div class="form-group"><input type="date" class="form-control" name="dato" id="dato" placeholder="Dato dd.mm.åååå" /></div>
                     <div class="form-group"><input type="text" class="form-control" name="tag" id="tag" placeholder="#Tagg" /></div>
                     <p><div class="form-group"><label class="btn btn-default btn-file">Last opp foto<input name="bild" id="bild" type="file" style="display: none;" /></label>
@@ -144,6 +146,7 @@
             <br/>
             <img th:src="${p.filnavn}" class="media-object" width="350" />
             <h2 th:text="${p.tittel}"></h2>
+            <p class="lead" th:text="${p.beskrivelse}"/>
             <p class="lead" th:text="${p.dato}"/>
             <div class="input-group">
                 <span class="input-group-addon" id="sizing-addon3">#</span>
@@ -164,7 +167,7 @@
                 <li><a href="#">Library</a></li>
             </ol>
             <button class="btn btn-danger btn-sm" onClick="deleteBildefil(this);">Slett bilde</button>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" th:attr="data-tittel=${p.tittel},data-iden=${p.id},data-dato=${p.dato}">Endre</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" th:attr="data-tittel=${p.tittel},data-iden=${p.id},data-beskrivelse=${p.beskrivelse},data-dato=${p.dato}">Endre</button>
 
         </div>
 
@@ -178,6 +181,7 @@
         //disable the default form submission
         event.preventDefault();
         var tittel = $( "#tittel" ).val();
+        var beskrivelse = $( "#beskrivelse").val();
         var dato = $( "#dato" ).val();
         bilde = document.getElementById("bild").files[0].name;
 
@@ -199,6 +203,7 @@
             success: function (returndata) {
                 $("#fotograflak").append("<div class='col-lg-4'><br/><img src='/files/"+bilde+"' class='media-object' width='350' />" +
                         "<h2>"+tittel+" <span class='label label-success'>Ny!</span></h2>" +
+                        "<p class='lead' >"+beskrivelse+"</p>"+
                         "<p class='lead' >"+dato+"</p>" +
                         "<div class='alert alert-warning' role='alert'><a onclick='refreshSite()' class='alert-link'>Oppdater</a> for å slette og endre</div></div>");
             },
@@ -232,11 +237,15 @@
                         <div class="form-group"><div class="modal-tittel">
                             <input type="text" class="form-control" name="itittel" id="itittel"/>
                             </div></div>
+                        <label class="control-label">Beskrivelse:</label>
+                        <div class="form-group"><div class="modal-beskrivelse">
+                                <input type="text" class="form-control" name="ibeskrivelse" id="ibeskrivelse"/>
+                            </div></div>
                         <label class="control-label">Dato:</label>
                         <div class="form-group"><div class="modal-dato">
                                 <input type="date" class="form-control" name="idato" id="idato"/>
                             </div></div>
-                </div>
+                    </div>
                 <div class="modal-footer">
                     <button type="button" onclick="Endre()" class="btn btn-primary">Endre</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
@@ -261,14 +270,17 @@
         var button = $(event.relatedTarget); // Button that triggered the modal
         var id = button.data('iden');
         var dato = button.data('dato');
-        var tittel = button.data('tittel'); // Extract info from data-* attributes
+        var beskrivelse = button.data('beskrivelse');
+        var tittel = button.data('tittel');// Extract info from data-* attributes
         // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
         // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
         var modal = $(this);
         modal.find('.modal-title').text('Rediger ' + tittel);
         modal.find('.modal-tittel input').val(tittel);
         modal.find('.modal-id input').val(id);
+        modal.find('.modal-beskrivelse input').val(beskrivelse);
         modal.find('.modal-dato input').val(dato);
+
 
     });
     /*]]>*/
