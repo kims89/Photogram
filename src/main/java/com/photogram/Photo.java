@@ -2,6 +2,8 @@ package com.photogram;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.List;
+
 /**
  * Created by kim on 09.11.2016.
  */
@@ -14,22 +16,23 @@ public class Photo {
     String tittel;
     String dato;
     String beskrivelse;
-    String tag;
+    List tag;
+
     String photographerID;
 
 
-    public Photo(String filnavn, String contentType, String tittel, String beskrivelse, String dato, String tag) {
+    public Photo(String filnavn, String contentType, String tittel, String beskrivelse, String dato) {
         this.filnavn = filnavn;
         this.contentType = contentType;
         this.tittel = tittel;
         this.beskrivelse = beskrivelse;
         this.dato = dato;
-        this.tag = tag;
     }
 
     public Photo() {
 
     }
+
 
     public String getFilnavn() {
         return filnavn;
@@ -51,7 +54,6 @@ public class Photo {
         return id;
     }
 
-
     public String getTittel() {
         return tittel;
     }
@@ -68,20 +70,20 @@ public class Photo {
         this.beskrivelse = beskrivelse;
     }
 
+    public List getTag() {
+        return tag;
+    }
+
+    public void setTag(List tag) {
+        this.tag = tag;
+    }
+
     public String getDato() {
         return dato;
     }
 
     public void setDato(String dato) {
         this.dato = dato;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
     }
 
     public String getPhotographerID() {

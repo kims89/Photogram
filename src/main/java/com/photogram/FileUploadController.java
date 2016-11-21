@@ -74,7 +74,7 @@ public class FileUploadController {
 
     @PostMapping("/PAAddPhoto")
     public String handleFileUpload(@RequestParam("bild") MultipartFile file, @RequestParam("tittel") String tittel,
-                                   @RequestParam("dato") String dato, @RequestParam ("beskrivelse") String beskrivelse, @RequestParam("tag") String tag) {
+                                   @RequestParam("dato") String dato, @RequestParam ("beskrivelse") String beskrivelse) {
 
         String brukerid = "";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -86,6 +86,10 @@ public class FileUploadController {
         }
 
         makeFolder();
+        List<String> tagList = new ArrayList<String>();
+        tagList.add("Tagg1");
+        tagList.add("Tagg2");
+        tagList.add("Tagg3");
         List<Photo> photoDList = new ArrayList<Photo>();
         Photo p = new Photo();
         System.out.println(file.getOriginalFilename());
@@ -93,7 +97,7 @@ public class FileUploadController {
         p.setContentType(file.getContentType());
         p.setDato(dato);
         p.setBeskrivelse(beskrivelse);
-        p.setTag("#test");
+        p.setTag(tagList);
         p.setTittel(tittel);
         p.setPhotographerID(brukerid);
         if(file.getContentType().contains("image")){
