@@ -86,8 +86,6 @@ public class FileUploadController {
         }
 
         makeFolder();
-
-
         List<Photo> photoDList = new ArrayList<Photo>();
         Photo p = new Photo();
         System.out.println(file.getOriginalFilename());
