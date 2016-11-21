@@ -130,6 +130,20 @@ public class FileUploadController {
         return "redirect:photoadmin";
     }
 
+    @PostMapping("/setTag")
+    public String handleChange(@RequestParam("id") String id,@RequestParam("tag") String tag) {
+        List<String> bufferTag;
+        Photo p = photoRepository.findOne(id);
+        bufferTag=p.getTag();
+        bufferTag.add(tag);
+        p.setTag(bufferTag);
+        photoRepository.save(p);
+
+        System.out.println(id+tag);
+
+        return "redirect:photoadmin";
+    }
+
 
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity handleStorageFileNotFound(StorageFileNotFoundException exc) {

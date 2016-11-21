@@ -154,8 +154,9 @@
             <p class="lead" th:text="${p.beskrivelse}"/>
             <p class="lead" th:text="${p.dato}"/>
 
-            <input type="text" class="form-control" id="tokenfield-typeahead" value="red,green,blue" />
-
+            <div th:value="${p.id}">
+            <input type="text" class="form-control" name="tokenfield-typeahead" th:value="${p.tag}" />
+            </div>
             <ol class="breadcrumb">
                 <li>Tagg#</li>
                 <li><a href="#">Home</a></li>
@@ -177,7 +178,25 @@
 <script>
     /*<![CDATA[*/
 
-    $('#tokenfield-typeahead').tokenfield();
+    $('input[name=tokenfield-typeahead]')
+
+            .on('tokenfield:createdtoken', function (e) {
+                var id=$(this).parent().parent().attr('value');
+                var tag = e.attrs.value;
+                var token = document.getElementById("token").getAttribute("content");
+                var headerName = document.getElementById("headerName").getAttribute("content");
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.onreadystatechange = function () {
+                    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                        console.log();
+                    }
+                };
+                xmlHttp.open("POST", "/setTag", true);
+                xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlHttp.setRequestHeader(headerName, token);
+                xmlHttp.send("id="+id+"&tag="+tag);
+            })
+            .tokenfield();
 
     //Program a custom submit function for the form
     $("form#data").submit(function(event){
