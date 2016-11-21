@@ -155,7 +155,7 @@
             <p class="lead" th:text="${p.dato}"/>
 
             <div th:value="${p.id}">
-            <input type="text" class="form-control" name="tokenfield-typeahead" th:value="${p.tag}" />
+            <input type="text" class="form-control" name="tokenfield-typeahead" th:value="${#strings.listJoin(p.tag,',')}" />
             </div>
             <ol class="breadcrumb">
                 <li>Tagg#</li>
@@ -196,6 +196,25 @@
                 xmlHttp.setRequestHeader(headerName, token);
                 xmlHttp.send("id="+id+"&tag="+tag);
             })
+
+            .on('tokenfield:removedtoken', function (e) {
+                var id=$(this).parent().parent().attr('value');
+                var tag = e.attrs.value;
+                var token = document.getElementById("token").getAttribute("content");
+                var headerName = document.getElementById("headerName").getAttribute("content");
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.onreadystatechange = function () {
+                    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                        console.log();
+                    }
+                };
+                xmlHttp.open("POST", "/deleteTag", true);
+                xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlHttp.setRequestHeader(headerName, token);
+                xmlHttp.send("id="+id+"&tag="+tag);
+            })
+
+
             .tokenfield();
 
     //Program a custom submit function for the form

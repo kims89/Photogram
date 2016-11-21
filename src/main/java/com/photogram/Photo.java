@@ -17,7 +17,6 @@ public class Photo {
     String dato;
     String beskrivelse;
     List tag;
-
     String photographerID;
 
 
