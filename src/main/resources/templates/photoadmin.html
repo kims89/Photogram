@@ -154,10 +154,10 @@
             <p class="lead" th:text="${p.beskrivelse}"/>
             <p class="lead" th:text="${p.dato}"/>
 
-            <div th:value="${p.id}">
-            <input type="text" class="form-control" name="tokenfield-typeahead" th:value="${#strings.listJoin(p.tag,',')}" />
+            <div class="form-group" th:value="${p.id}">
+            <input type="text" placeholder="Legg til tag og trykk enter" name="tokenfield-typeahead" th:value="${#strings.listJoin(p.tag,',')}" />
             </div>
-            <ol class="breadcrumb">
+            <!--<ol class="breadcrumb">
                 <li>Tagg#</li>
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Library</a></li>
@@ -167,9 +167,9 @@
                 <li><a href="#">Library</a></li>
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Library</a></li>
-            </ol>
+            </ol>-->
             <button class="btn btn-danger btn-sm" onClick="deleteBildefil(this);">Slett bilde</button>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" th:attr="data-tittel=${p.tittel},data-iden=${p.id},data-beskrivelse=${p.beskrivelse},data-dato=${p.dato}">Endre</button>
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" th:attr="data-tittel=${p.tittel},data-iden=${p.id},data-beskrivelse=${p.beskrivelse},data-dato=${p.dato}">Endre</button>
 
         </div>
 
