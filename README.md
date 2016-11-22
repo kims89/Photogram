@@ -1,6 +1,9 @@
 # Photogram
 Eksamensprosjekt med Kim, Fredrik og Arne.
 
+<h2>Endringslogg</h2>
+- 21.11.2016: Lagt inn mulighet til å legge inn tagg fra fotografsiden.
+
 <h2>JavaScript library</h2>
 
 http://getbootstrap.com = Framework for klientdel
