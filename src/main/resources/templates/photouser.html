@@ -1,10 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:width="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta id="token" name="_csrf" th:content="${_csrf.token}"/>
+    <meta id="headerName" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <script src="/res/jquery-3.1.1.min.js"></script>
+    <script src="/res/tether.min.js"></script><!-- Tether for Bootstrap. Nødvendig for at Bootstrap skal fungere optimalt -->
+    <script src="/res/jquery.easy-autocomplete.js"></script>
+    <script src="/res/jquery.easy-autocomplete.js"></script>
+    <link rel="stylesheet" href="/res/easy-autocomplete.min.css" />
+    <link rel="stylesheet" href="/res/bootstrap.css"/>
+    <link rel="stylesheet" href="/res/bootstrap-tokenfield.css" />
+    <script src="/res/bootstrap.js" ></script>
+
+    <title>Photogram/ Usersite</title>
 </head>
 <body>
+<!-- Fixed navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Bootstrap theme</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><p><input id="template-links" placeholder="Søk" /></p></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+    <div class="jumbotron">
+    </div>
+    <div class="row" id="fotoflak">
+        <div class="col-lg-7" th:each="p : ${photo}" th:id="${p.id}">
+            <img th:src="${p.filnavn}" class="img-rounded" width="100%" />
+            <h2 th:text="${p.tittel}"></h2>
+            <ol class="breadcrumb">
+                <li>Tagg#</li>
+                <li th:each="pt : ${p.tag}">  <span th:text="${pt}"></span></li>
+            </ol>
+            <p class="lead" th:text="${p.beskrivelse}"/>
+            <p class="lead" th:text="${p.dato}"/>
+
+                <div th:each="pk : ${p.kommentarer}" style="width: 100%">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong><span th:text="${pk.navn}"></span>
+                            </strong>
+                            <span class="label label-default">Bruker</span>
+                            <span class="label label-primary">Fotograf</span>
+
+                        </div>
+                        <div class="panel-body">
+                            <span th:text="${pk.kommentar}"></span>
+                        </div>
+                    </div>
+                </div>
+                    <div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Legg inn kommentar..."/>
+                            <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button">Legg inn</button>
+                        </span>
+                        </div>
+                    </div>
+            &nbsp;
+            <div style='border-bottom:3px solid #e7e7e7;'></div>
+            &nbsp;
+
+
+        </div>
+    </div>
+
+
+</div>
 
 </body>
 </html>

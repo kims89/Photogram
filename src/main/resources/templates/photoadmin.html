@@ -146,29 +146,17 @@
 
 <div class="container">
     <div class="row" id="fotograflak">
-        <div class="col-lg-4" th:each="p : ${photo}" th:id="${p.id}">
+        <div class="col-lg-7" th:each="p : ${photo}" th:id="${p.id}">
             <br/>
-            <img th:src="${p.filnavn}" class="media-object" width="350" />
+            <img th:src="${p.filnavn}" class="img-rounded" width="100%" />
             <h2 th:text="${p.tittel}"></h2>
+            <div class="form-group" th:value="${p.id}">
+                <input type="text" placeholder="Legg til tag og trykk enter" name="tokenfield-typeahead" th:value="${#strings.listJoin(p.tag,',')}" />
+            </div>
             <p class="lead" th:text="${p.beskrivelse}"/>
             <p class="lead" th:text="${p.dato}"/>
-
-            <div class="form-group" th:value="${p.id}">
-            <input type="text" placeholder="Legg til tag og trykk enter" name="tokenfield-typeahead" th:value="${#strings.listJoin(p.tag,',')}" />
-            </div>
-            <!--<ol class="breadcrumb">
-                <li>Tagg#</li>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Library</a></li>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Library</a></li>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Library</a></li>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Library</a></li>
-            </ol>-->
-            <button class="btn btn-danger btn-sm" onClick="deleteBildefil(this);">Slett bilde</button>
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" th:attr="data-tittel=${p.tittel},data-iden=${p.id},data-beskrivelse=${p.beskrivelse},data-dato=${p.dato}">Endre</button>
+            <button class="btn btn-danger" onClick="deleteBildefil(this);">Slett bilde</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" th:attr="data-tittel=${p.tittel},data-iden=${p.id},data-beskrivelse=${p.beskrivelse},data-dato=${p.dato}">Endre</button>
 
         </div>
 
@@ -241,7 +229,7 @@
             },
             processData: false,
             success: function (returndata) {
-                $("#fotograflak").append("<div class='col-lg-4'><br/><img src='/files/"+bilde+"' class='media-object' width='350' />" +
+                $("#fotograflak").append("<div class='col-lg-4'><br/><img src='/files/"+bilde+"' class='img-rounded' width='350' />" +
                         "<h2>"+tittel+" <span class='label label-success'>Ny!</span></h2>" +
                         "<p class='lead' >"+beskrivelse+"</p>"+
                         "<p class='lead' >"+dato+"</p>" +

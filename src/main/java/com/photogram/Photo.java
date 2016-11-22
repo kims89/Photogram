@@ -17,6 +17,7 @@ public class Photo {
     String dato;
     String beskrivelse;
     List tag;
+    List<Comments> kommentarer;
     String photographerID;
 
 
@@ -32,6 +33,14 @@ public class Photo {
 
     }
 
+
+    public List<Comments> getKommentarer() {
+        return kommentarer;
+    }
+
+    public void setKommentarer(List<Comments> kommentarer) {
+        this.kommentarer = kommentarer;
+    }
 
     public String getFilnavn() {
         return filnavn;
