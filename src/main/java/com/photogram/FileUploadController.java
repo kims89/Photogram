@@ -1,5 +1,6 @@
 package com.photogram;
 
+import com.photogram.Repository.CommentsRepository;
 import com.photogram.Repository.PhotoRepository;
 import com.photogram.Repository.UserRepository;
 import com.photogram.User;
@@ -32,6 +33,9 @@ import java.util.stream.Collectors;
 public class FileUploadController {
 
     @Autowired
+    CommentsRepository commentsrepository;
+
+    @Autowired
     UserRepository userRepository;
 
     @Autowired
@@ -45,7 +49,7 @@ public class FileUploadController {
     }
 
     @RequestMapping("/photoadmin")
-    public String home(Model model) {
+    public String homeAdmin(Model model) {
 
         String brukerid = "";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -59,6 +63,28 @@ public class FileUploadController {
         model.addAttribute("photo", photoList);
 
         return "photoadmin";
+    }
+
+    @RequestMapping("/photouser")
+    public String homeUser(Model model) {
+
+        Photo p = photoRepository.findOne("5834a257d635e026a2becb76");
+        Comments c = new Comments("Kim","Arne og Fredrik skal gjøre det og det og det! æ bestemme","5834a257d635e026a2becb76");
+        Comments d = new Comments("Arne","Hehehe","5834a257d635e026a2becb76");
+        Comments e = new Comments("Fredrik","Nope!","5834a257d635e026a2becb76");
+
+
+        List<Comments> kom = new ArrayList<Comments>();
+        kom.add(c);
+        kom.add(d);
+        kom.add(e);
+        p.setKommentarer(kom);
+        commentsrepository.save(c);
+        photoRepository.save(p);
+
+        model.addAttribute("photo", photoRepository.findAll());
+
+        return "photouser";
     }
 
     @GetMapping("/files/{filename:.+}")

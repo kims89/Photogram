@@ -10,7 +10,10 @@ package com.photogram;
         import org.springframework.web.bind.annotation.*;
 
         import java.util.ArrayList;
+        import java.util.HashSet;
         import java.util.List;
+        import java.util.Set;
+
 @Controller
 public class PhotogramController {
 
@@ -53,8 +56,22 @@ public class PhotogramController {
     @RequestMapping(value="/sok", method = RequestMethod.GET)
     public @ResponseBody List getSearchInJSON() {
         List<Search> sokList = new ArrayList<>();
+        List<String> tagglist = new ArrayList<String>();
         for(Photo ph : photoRepository.findAll()){
             sokList.add(new Search(ph.getTittel()+" (Bilde)","/photo/"+ph.getId()));
+        }
+
+        for(Photo pht : photoRepository.findAll()){
+            tagglist.addAll(pht.getTag());
+        }
+        Set<String> hs = new HashSet<>();
+        hs.addAll(tagglist);
+        tagglist.clear();
+        tagglist.addAll(hs);
+
+        for(String s: tagglist){
+            sokList.add(new Search("#"+s,"/tag/"+s));
+
         }
 
         for(User us : userRepository.findAll()){
@@ -65,6 +82,20 @@ public class PhotogramController {
 
         return sokList;
 
+    }
+
+    @RequestMapping(value="tag/{id}",method = RequestMethod.GET)
+    public String tagghome( Model model,@PathVariable String id) {
+        List<Photo> photoList = new ArrayList<Photo>();
+        for (Photo p : photoRepository.findAll()){
+            if(p.getTag().contains(id)){
+                photoList.add(p);
+            }
+        }
+        model.addAttribute("photo", photoList);
+
+
+        return "photoadmin";
     }
 
     @RequestMapping(value="photo/{id}",method = RequestMethod.GET)

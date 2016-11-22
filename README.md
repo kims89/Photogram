@@ -7,6 +7,9 @@ Eksamensprosjekt med Kim, Fredrik og Arne.
 - Spring Web
 - MongoDB
 
+<h2>Lenker</h2>
+http://bootsnipp.com/snippets/featured/user-comment-example
+https://www.safaribooksonline.com/blog/2012/12/18/document-oriented-data-modeling-with-mongodb
 
 <h2>JavaScript library</h2>
 
