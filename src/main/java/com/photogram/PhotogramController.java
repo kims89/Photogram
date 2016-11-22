@@ -95,7 +95,7 @@ public class PhotogramController {
         model.addAttribute("photo", photoList);
 
 
-        return "photoadmin";
+        return "photouser";
     }
 
     @RequestMapping(value="photo/{id}",method = RequestMethod.GET)
@@ -105,7 +105,7 @@ public class PhotogramController {
         photoList.add(ph);
         model.addAttribute("photo", photoList);
 
-        return "photoadmin";
+        return "photouser";
     }
 
 
@@ -117,7 +117,7 @@ public class PhotogramController {
         }
         model.addAttribute("photo", photoList);
 
-        return "photoadmin";
+        return "photouser";
     }
 
 // --------------------------------------------------------->

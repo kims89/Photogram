@@ -15,6 +15,40 @@
     <script src="/res/bootstrap.js" ></script>
 
     <title>Photogram/ Usersite</title>
+
+    <script>
+        /*<![CDATA[*/
+        $(document).ready(function () {
+            var options = {
+                url: "/sok",
+
+                getValue: "sok",
+
+
+                list: {
+                    match: {
+                        enabled: true
+                    },
+                    hideAnimation: {
+                        type: "slide", //normal|slide|fade
+                        time: 400,
+                        callback: function() {}
+                    }
+                },
+                template: {
+                    type: "links",
+                    fields: {
+                        link: "url"
+                    }
+                }
+            };
+
+            $("#template-links").easyAutocomplete(options);
+
+        });
+
+        /*]]>*/
+    </script>
 </head>
 <body>
 <!-- Fixed navbar -->
@@ -46,7 +80,7 @@
             <img th:src="${p.filnavn}" class="img-rounded" width="100%" />
             <h2 th:text="${p.tittel}"></h2>
             <ol class="breadcrumb">
-                <li>Tagg#</li>
+                <li>#</li>
                 <li th:each="pt : ${p.tag}">  <span th:text="${pt}"></span></li>
             </ol>
             <p class="lead" th:text="${p.beskrivelse}"/>
