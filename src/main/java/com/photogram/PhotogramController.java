@@ -50,11 +50,9 @@ public class PhotogramController {
         return "redirect:login";
     }
 
-    // TEST
-    // --------------------------------------------------------->
-
     @RequestMapping(value="/sok", method = RequestMethod.GET)
     public @ResponseBody List getSearchInJSON() {
+
         List<Search> sokList = new ArrayList<>();
         List<String> tagglist = new ArrayList<String>();
         for(Photo ph : photoRepository.findAll()){
@@ -119,6 +117,8 @@ public class PhotogramController {
 
         return "photouser";
     }
+
+
 
 // --------------------------------------------------------->
 //Endre rolle
