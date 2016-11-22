@@ -10,27 +10,43 @@
     <link rel="stylesheet" href="/res/bootstrap.css"/>
     <script src="/res/bootstrap.js" ></script>
 
+
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="/res/signin.css"/>
-
+    <link rel="stylesheet" href="/res/starter-template.css"/>
 
 </head>
 <body>
+
 <div class="container">
-    <form th:action="@{/NewUser}" method="post" class="form-signin">
-        <h2 class="form-signin-heading">Opprett bruker</h2>
-        <div><input type="text" placeholder="Fornavn" name="fornavn" class="form-control"/></div>
-        <div><input type="text" placeholder="Etternavn" name="etternavn" class="form-control"/></div>
-        <div><input type="text" placeholder="Brukernavn" name="brukernavn" class="form-control"/></div>
-        <div><input type="password" name="passord" placeholder="Passord" class="form-control"/></div>
-        <div><input type="submit" value="Opprett" class="btn btn-lg btn-primary btn-block"/></div>
-    </form>
-    <form th:action="@{/login}" method="post" class="form-signin">
-        <h2 class="form-signin-heading">Logg inn</h2>
-        <div><input type="text" placeholder="Brukernavn" name="username" class="form-control"/></div>
-        <div><input type="password" placeholder="Passord" name="password" class="form-control"/></div>
-        <div><input type="submit" value="Logg inn" class="btn btn-lg btn-primary btn-block"/></div>
-    </form>
+    <div class="starter-template">
+        <h1>Photogram</h1>
+        <form th:action="@{/login}" method="post" class="form-signin">
+            <div><input type="text" placeholder="Brukernavn" name="username" class="form-control"/></div>
+            <div><input type="password" placeholder="Passord" name="password" class="form-control"/></div>
+            <div><input type="submit" value="Logg inn" class="btn btn-lg btn-primary btn-block"/></div>
+        </form>
+
+        <div class="starter-template">
+            <h3>Ikke bruker?</h3>
+            <div class="form-signin">
+                <button type="button" class="btn btn-lg btn-primary btn-block" data-toggle="modal" data-target=".bs-example-modal-sm">Opprett bruker</button>
+                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <form th:action="@{/NewUser}" method="post" class="form-signin">
+                                <div><input type="text" placeholder="Fornavn" name="fornavn" class="form-control"/></div>
+                                <div><input type="text" placeholder="Etternavn" name="etternavn" class="form-control"/></div>
+                                <div><input type="text" placeholder="Brukernavn" name="brukernavn" class="form-control"/></div>
+                                <div><input type="password" name="passord" placeholder="Passord" class="form-control"/></div>
+                                <div><input type="submit" value="Opprett" class="btn btn-lg btn-primary btn-block"/></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>
