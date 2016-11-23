@@ -8,17 +8,20 @@
     <script src="/res/jquery-3.1.1.min.js"></script>
     <script src="/res/tether.min.js"></script><!-- Tether for Bootstrap. Nødvendig for at Bootstrap skal fungere optimalt -->
 
-
     <script src="/res/jquery.easy-autocomplete.js"></script>
     <script src="/res/bootstrap-tokenfield.js"></script>
 
     <script src="/res/jquery.easy-autocomplete.js"></script>
     <link rel="stylesheet" href="/res/easy-autocomplete.min.css" />
 
+    <script src="/res/datedropper.js"></script>
+    <link rel="stylesheet" type="text/css" href="/res/datedropper.css"/>
+
     <link rel="stylesheet" href="/res/bootstrap.css"/>
     <link rel="stylesheet" href="/res/bootstrap-tokenfield.css" />
     <link rel="stylesheet" href="/res/tokenfield-typeahead.css" />
     <script src="/res/bootstrap.js" ></script>
+
 
 
 
@@ -136,7 +139,7 @@
                 <form id="data">
                     <div class="form-group"><input type="text" class="form-control" name="tittel" id="tittel" placeholder="Tittel" /></div>
                     <div class="form-group"><input type="text" class="form-control" name="beskrivelse" id="beskrivelse" placeholder="Beskrivelse" /></div>
-                    <div class="form-group"><input type="date" class="form-control" name="dato" id="dato" placeholder="Dato dd.mm.åååå" /></div>
+                    <div class="form-group"><input class="form-control" name="dato" placeholder="Trykk her for dato" type="text" id="dato" /></div>
                     <p><div class="form-group"><label class="btn btn-default btn-file">Last opp foto<input name="bild" id="bild" type="file" style="display: none;" /></label>
                     <input class="btn btn-primary" type="submit" value="Publiser"/></div></p>
                 </form>
@@ -165,6 +168,8 @@
 </div>
 <script>
     /*<![CDATA[*/
+
+    $( "#dato" ).dateDropper();
 
     $('input[name=tokenfield-typeahead]')
 
