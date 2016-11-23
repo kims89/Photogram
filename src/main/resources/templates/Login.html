@@ -23,6 +23,7 @@
         <h1>Photogram</h1>
         <form th:action="@{/login}" method="post" class="form-signin">
             <div><input type="text" placeholder="Brukernavn" name="username" class="form-control"/></div>
+            <p></p>
             <div><input type="password" placeholder="Passord" name="password" class="form-control"/></div>
             <div><input type="submit" value="Logg inn" class="btn btn-lg btn-primary btn-block"/></div>
         </form>
@@ -35,10 +36,10 @@
                     <div class="modal-dialog modal-sm" role="document">
                         <div class="modal-content">
                             <form th:action="@{/NewUser}" method="post" class="form-signin">
-                                <div><input type="text" placeholder="Fornavn" name="fornavn" class="form-control"/></div>
-                                <div><input type="text" placeholder="Etternavn" name="etternavn" class="form-control"/></div>
-                                <div><input type="text" placeholder="Brukernavn" name="brukernavn" class="form-control"/></div>
-                                <div><input type="password" name="passord" placeholder="Passord" class="form-control"/></div>
+                                <p><div><input type="text" placeholder="Fornavn" name="fornavn" class="form-control"/></div></p>
+                                <p><div><input type="text" placeholder="Etternavn" name="etternavn" class="form-control"/></div></p>
+                                <p><div><input type="text" placeholder="Brukernavn" name="brukernavn" class="form-control"/></div></p>
+                                <p><div><input type="password" name="passord" placeholder="Passord" class="form-control"/></div></p>
                                 <div><input type="submit" value="Opprett" class="btn btn-lg btn-primary btn-block"/></div>
                             </form>
                         </div>
