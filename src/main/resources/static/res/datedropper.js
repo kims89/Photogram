@@ -241,16 +241,16 @@ jQuery.easing._dd_easing = function(x, t, b, c, d) {
                         var mn = [
                             "januar",
                             "februar",
-                            "marts",
+                            "mars",
                             "april",
-                            "maj",
+                            "mai",
                             "juni",
                             "juli",
                             "august",
                             "september",
                             "oktober",
                             "november",
-                            "december"
+                            "desember"
                         ];
                         var dn = [
                             'søndag',

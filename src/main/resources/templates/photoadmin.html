@@ -176,7 +176,12 @@
 <script>
     /*<![CDATA[*/
 
-    $( "#dato" ).dateDropper();
+    $( "#dato" ).dateDropper(
+            {
+                lang:"da",
+                format:"d. F Y"
+            }
+    );
 
     $('input[name=tokenfield-typeahead]')
 
