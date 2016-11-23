@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,6 +61,7 @@ public class FileUploadController {
                 photoList.add(ph);
             }
         }
+        Collections.reverse(photoList);
         model.addAttribute("photo", photoList);
 
         return "photoadmin";
@@ -68,21 +70,23 @@ public class FileUploadController {
     @RequestMapping("/photouser")
     public String homeUser(Model model) {
 
-        Photo p = photoRepository.findOne("5834a257d635e026a2becb76");
-        Comments c = new Comments("Kim","Arne og Fredrik skal gjøre det og det og det! æ bestemme","5834a257d635e026a2becb76");
-        Comments d = new Comments("Arne","Hehehe","5834a257d635e026a2becb76");
-        Comments e = new Comments("Fredrik","Nope!","5834a257d635e026a2becb76");
+        Photo p = photoRepository.findOne("58356b1136b59d09f42edbae");
+        Comments c = new Comments("Kim","Arne og Fredrik skal gjøre det og det og det! æ bestemme","583550f936b59d12582c32d6");
+        Comments d = new Comments("Arne","Hehehe","58356b1136b59d09f42edbae");
+        Comments e = new Comments("Fredrik","Nope!","58356b1136b59d09f42edbae");
 
 
         List<Comments> kom = new ArrayList<Comments>();
+        List<Photo> pho = new ArrayList<Photo>();
         kom.add(c);
         kom.add(d);
         kom.add(e);
         p.setKommentarer(kom);
         commentsrepository.save(c);
         photoRepository.save(p);
-
-        model.addAttribute("photo", photoRepository.findAll());
+        pho.addAll(photoRepository.findAll());
+        Collections.reverse(pho);
+        model.addAttribute("photo", pho);
 
         return "photouser";
     }
