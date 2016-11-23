@@ -24,6 +24,12 @@
 
                 getValue: "sok",
 
+                template: {
+                    type: "links",
+                    fields: {
+                        link: "url"
+                    }
+                },
 
                 list: {
                     match: {
@@ -33,12 +39,6 @@
                         type: "slide", //normal|slide|fade
                         time: 400,
                         callback: function() {}
-                    }
-                },
-                template: {
-                    type: "links",
-                    fields: {
-                        link: "url"
                     }
                 }
             };
@@ -96,9 +96,9 @@
                 <li>#</li>
                 <li th:each="pt : ${p.tag}">  <span th:text="${pt}"></span></li>
             </ol>
-            <p class="lead" th:text="${p.beskrivelse}"/>
-            <p class="lead" th:text="${p.dato}"/>
-
+            <blockquote>
+            <p th:text="${p.beskrivelse}"/>
+             </blockquote>
                 <div th:each="pk : ${p.kommentarer}" style="width: 100%">
                     <div class="panel panel-default">
                         <div class="panel-heading">
