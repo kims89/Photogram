@@ -69,6 +69,13 @@
                 <li><input id="template-links" placeholder="Søk" /></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <p>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" class="btn btn-danger" value="Logg ut"/>
+                </form>
+                </p>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">Sign Up</a></li>
                 <li><a href="#">Login</a></li>
             </ul>

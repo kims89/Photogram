@@ -122,7 +122,14 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li><p><input id="template-links" placeholder="Søk" /></p></li>
+                <li><p><input id="template-links" placeholder="Søk"/></p></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <p>
+                <form th:action="@{/logout}" method="post">
+                <input type="submit" class="btn btn-danger" value="Logg ut"/>
+                </form>
+                </p>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -277,7 +284,7 @@
                             </div></div>
                         <label class="control-label">Dato:</label>
                         <div class="form-group"><div class="modal-dato">
-                                <input type="date" class="form-control" name="idato" id="idato"/>
+                            <input type="text" class="form-control" name="idato" id="idato"/>
                             </div></div>
                     </div>
                 <div class="modal-footer">
@@ -286,7 +293,7 @@
                 </div>
             </div>
         </div>
-    </div>
+  </div>
 </div>
 
 <script>
@@ -311,5 +318,8 @@
     });
     /*]]>*/
 </script>
+
+
+
 </body>
 </html>
