@@ -93,7 +93,7 @@
             <img th:src="${p.filnavn}" class="img-rounded" width="100%" />
             <ol class="breadcrumb">
                 <li>#</li>
-                <li th:each="pt : ${p.tag}">  <span th:text="${pt}"></span></li>
+                <li th:each="pt : ${p.tag}"><a th:href="'/tag/'+${pt}"><span th:text="${pt}"></span></a></li>
             </ol>
             <blockquote>
             <p th:text="${p.beskrivelse}"/>
@@ -122,9 +122,8 @@
                     </div>
             &nbsp;
             <div style='border-bottom:3px solid #e7e7e7;'></div>
-
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
-        &nbsp;
     </div>
 </div>
 
