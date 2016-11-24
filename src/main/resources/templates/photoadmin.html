@@ -161,6 +161,7 @@
 </div>
 
 <div class="container">
+    <div class="row" id="fotograflakUpdate"></div>
     <div class="row" id="fotograflak">
         <div class="col-lg-7" th:each="p : ${photo}" th:id="${p.id}">
             <br/>
@@ -180,6 +181,51 @@
 
     </div>
 </div>
+<script>
+    /*<![CDATA[*/
+
+
+
+    /*]]>*/
+</script>
+&nbsp;
+</div>
+<div class="bd-example">
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">New message</h4>
+                </div>
+                <div class="modal-body">
+                        <div class="modal-id">
+                            <input type="hidden" name="iid" id="iid" />
+                        </div>
+                        <label class="control-label">Tittel:</label>
+                        <div class="form-group"><div class="modal-tittel">
+                            <input type="text" class="form-control" name="itittel" id="itittel"/>
+                            </div></div>
+                        <label class="control-label">Beskrivelse:</label>
+                        <div class="form-group"><div class="modal-beskrivelse">
+                                <input type="text" class="form-control" name="ibeskrivelse" id="ibeskrivelse"/>
+                            </div></div>
+                        <label class="control-label">Dato:</label>
+                        <div class="form-group"><div class="modal-dato">
+                            <input type="text" class="form-control" name="idato" id="idato"/>
+                            </div></div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="Endre()" class="btn btn-primary">Endre</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
+                </div>
+            </div>
+        </div>
+  </div>
+</div>
+
 <script>
     /*<![CDATA[*/
 
@@ -254,8 +300,7 @@
             },
             processData: false,
             success: function (returndata) {
-                $("#fotograflak").append("<div class='col-lg-4'><br/><img src='/files/"+bilde+"' class='img-rounded' width='350' />" +
-                        "<h2>"+tittel+" <span class='label label-success'>Ny!</span></h2>" +
+                $("#fotograflakUpdate").append("<div class='col-lg-7'><h2>"+tittel+" <small>"+dato+" </small><span class='label label-success'>Ny!</span></h2><br/><img src='/files/"+bilde+"' class='img-rounded' width='100%' />" +
                         "<p class='lead' >"+beskrivelse+"</p>"+
                         "<p class='lead' >"+dato+"</p>" +
                         "<div class='alert alert-warning' role='alert'><a onclick='refreshSite()' class='alert-link'>Oppdater</a> for å slette og endre</div></div>");
@@ -266,50 +311,6 @@
         });
         return false;
     });
-
-
-    /*]]>*/
-</script>
-&nbsp;
-</div>
-<div class="bd-example">
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="exampleModalLabel">New message</h4>
-                </div>
-                <div class="modal-body">
-                        <div class="modal-id">
-                            <input type="hidden" name="iid" id="iid" />
-                        </div>
-                        <label class="control-label">Tittel:</label>
-                        <div class="form-group"><div class="modal-tittel">
-                            <input type="text" class="form-control" name="itittel" id="itittel"/>
-                            </div></div>
-                        <label class="control-label">Beskrivelse:</label>
-                        <div class="form-group"><div class="modal-beskrivelse">
-                                <input type="text" class="form-control" name="ibeskrivelse" id="ibeskrivelse"/>
-                            </div></div>
-                        <label class="control-label">Dato:</label>
-                        <div class="form-group"><div class="modal-dato">
-                            <input type="text" class="form-control" name="idato" id="idato"/>
-                            </div></div>
-                    </div>
-                <div class="modal-footer">
-                    <button type="button" onclick="Endre()" class="btn btn-primary">Endre</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
-                </div>
-            </div>
-        </div>
-  </div>
-</div>
-
-<script>
-    /*<![CDATA[*/
 
     $('#exampleModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Button that triggered the modal

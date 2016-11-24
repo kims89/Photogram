@@ -119,7 +119,6 @@ public class FileUploadController {
         List<String> tagList = new ArrayList<String>();
         List<Photo> photoDList = new ArrayList<Photo>();
         Photo p = new Photo();
-        System.out.println(file.getOriginalFilename());
         p.setFilnavn("/files/"+file.getOriginalFilename());
         p.setContentType(file.getContentType());
         p.setDato(dato);
