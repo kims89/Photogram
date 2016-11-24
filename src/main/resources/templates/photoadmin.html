@@ -159,6 +159,8 @@
     <div class="row" id="fotograflak">
         <div class="col-lg-7" th:each="p : ${photo}" th:id="${p.id}">
             <br/>
+            <h1><span th:text="${p.tittel}"></span> <small><span th:text="${p.dato}"></span></small></h1>
+            <div style='border-bottom:6px solid #3ee7cd;'></div>
             <img th:src="${p.filnavn}" class="img-rounded" width="100%" />
             <h2 th:text="${p.tittel}"></h2>
             <div class="form-group" th:value="${p.id}">
