@@ -67,7 +67,7 @@ public class FileUploadController {
         return "photoadmin";
     }
 
-    @RequestMapping("/photouser")
+    @RequestMapping("/")
     public String homeUser(Model model) {
 
 //        Photo p = photoRepository.findOne("58356b1136b59d09f42edbae");

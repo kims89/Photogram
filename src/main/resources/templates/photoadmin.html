@@ -108,36 +108,41 @@
 <body>
 
 <!-- Fixed navbar -->
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-light navbar-fixed-top" style="background-color: #e3f2fd;">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+            <a class="navbar-brand" href="/photoadmin"><strong>Photogram</strong> / Fotograf</a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                ☰
             </button>
-            <a class="navbar-brand" href="#">Bootstrap theme</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><p><input id="template-links" placeholder="Søk"/></p></li>
-            </ul>
+
+
             <ul class="nav navbar-nav navbar-right">
-                <p>
-                <form th:action="@{/logout}" method="post">
-                <input type="submit" class="btn btn-danger" value="Logg ut"/>
-                </form>
-                </p>
+                <li>
+                    <p>
+                    <form th:action="@{/logout}" method="post">
+                        <input type="submit" class="btn btn-danger" value="Logg ut"/>
+                    </form>
+                    </p>
+                </li>
+                <li>
+
+                    <a style="background-color: #e3f2fd;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Flere valg<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/photoadmin">Gå til brukerside</a></li>
+                    </ul>
+
+                </li>
             </ul>
         </div><!--/.nav-collapse -->
+
     </div>
 </nav>
-
 <div id="refreshSite">
 <!-- Main jumbotron for a primary marketing message or call to action -->
-<div class="jumbotron">
+<div class="jumbotron" style="background-color: #e3f2fd;">
     <div class="container">
         <h1>Fotograf</h1>
         <div class="alert alert-success" role="alert">Her kan du enkelt legge ut bilder med metadata.</div>

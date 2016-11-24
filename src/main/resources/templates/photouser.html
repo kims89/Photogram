@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:width="http://www.w3.org/1999/xhtml">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:width="http://www.w3.org/1999/xhtml">
 <head>
     <meta id="token" name="_csrf" th:content="${_csrf.token}"/>
     <meta id="headerName" name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -51,33 +51,40 @@
     </script>
 </head>
 <body>
+
 <!-- Fixed navbar -->
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-light navbar-fixed-top" style="background-color: #e3f2fd;">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+            <a class="navbar-brand" href="/photouser"><strong>Photogram</strong> / Fotograf</a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                ☰
             </button>
-            <a class="navbar-brand" href="/photouser">Photogram.</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><input id="template-links" placeholder="Søk" /></li>
+                <li><p><form><input id="template-links" placeholder="Søk" /></form></p></li>
             </ul>
+
             <ul class="nav navbar-nav navbar-right">
-                <p>
-                <form th:action="@{/logout}" method="post">
-                    <input type="submit" class="btn btn-danger" value="Logg ut"/>
-                </form>
-                </p>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Sign Up</a></li>
-                <li><a href="#">Login</a></li>
+                <li>
+                    <p>
+                    <form th:action="@{/logout}" method="post">
+                        <input type="submit" class="btn btn-danger" value="Logg ut"/>
+                    </form>
+                    </p>
+                </li>
+                <li>
+
+                    <a style="background-color: #e3f2fd;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Flere valg<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/photoadmin">Gå til fotografside</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">Fotografinnstilling (Kun brukere)</li>
+                        <li><a href="#">Registrer som fotograf</a></li>
+                    </ul>
+
+                </li>
             </ul>
         </div><!--/.nav-collapse -->
 
@@ -85,8 +92,13 @@
 </nav>
 
 <div class="container">
+
+    ogged in user: <span sec:authentication="name"></span> |
+    Roles: <span sec:authentication="principal.authorities"></span>
+
+
     <div class="row" id="fotoflak">
-        <br/><br/><br/>
+        <br/><br/>
         <div class="col-lg-7" th:each="p : ${photo}" th:id="${p.id}">
             <h1><span th:text="${p.tittel}"></span> <small><span th:text="${p.dato}"></span></small></h1>
             <div style='border-bottom:6px solid #3ee7cd;'></div>
