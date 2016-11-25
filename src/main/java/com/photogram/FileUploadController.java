@@ -104,7 +104,7 @@ public class FileUploadController {
 
     @PostMapping("/PAAddPhoto")
     public String handleFileUpload(@RequestParam("bild") MultipartFile file, @RequestParam("tittel") String tittel,
-                                   @RequestParam("dato") String dato, @RequestParam ("beskrivelse") String beskrivelse) {
+                                   @RequestParam("dato") String dato, @RequestParam ("beskrivelse") String beskrivelse) throws Exception {
 
         String brukerid = "";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -136,11 +136,8 @@ public class FileUploadController {
 
         if(file.getContentType().contains("image")){
             File y = new File("upload-dir/"+file.getOriginalFilename());
-            storageService.store(file);
-            if(y.exists()){
-                System.out.println("Filen finnes, derfor lager man ikke en ny");
-            }
-            else {
+            if(!y.exists()){
+                storageService.store(file);
                 photoRepository.save(p);
                 User user = userRepository.findOne(brukerid);
                 for(Photo ph : photoRepository.findAll()){
@@ -148,6 +145,10 @@ public class FileUploadController {
                         photoDList.add(ph);
                     }
                 }
+                System.out.println("Filen finnes, derfor lager man ikke en ny");
+            }
+            else {
+                throw new Exception("ds");
             }
         }
 

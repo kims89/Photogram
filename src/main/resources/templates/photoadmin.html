@@ -103,7 +103,7 @@
 
                 bootstrap_alert = function() {};
                 bootstrap_alert.warning = function(message) {
-                    $('#alert_placeholder').html('<div class="alert alert-success alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Success!</strong> Indicates a successfulor positive action.</div>').fadeIn();
+                    $('#alert_placeholder').html('<div class="alert alert-success alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+message+'</div>').fadeIn();
                 };
 
         /*]]>*/
@@ -122,6 +122,15 @@
             </button>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <p>
+                    <form action="/" method="get">
+                        <input type="submit" class="btn btn-info" value="Gå til brukersiden"/>
+                    </form>
+                    </p>
+                </li>
+            </ul>
 
 
             <ul class="nav navbar-nav navbar-right">
@@ -132,14 +141,6 @@
                     </form>
                     </p>
                 </li>
-                <li>
-
-                    <a style="background-color: #e3f2fd;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Flere valg<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/">Gå til brukerside</a></li>
-                    </ul>
-
-                </li>
             </ul>
         </div><!--/.nav-collapse -->
 
@@ -148,7 +149,7 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron" style="background-color: #e3f2fd;">
     <div class="container">
-        <h1>Fotograf</h1>
+        <h2>Hei fotograf!</h2>
         <div class="alert alert-success" role="alert">Her kan du enkelt legge ut bilder med metadata.</div>
         <div class="row">
             <div class="col-md-4">
