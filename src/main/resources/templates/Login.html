@@ -3,6 +3,9 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:width="http://www.w3.org/1999/xhtml">
 <head>
 
+    <meta id="token" name="_csrf" th:content="${_csrf.token}"/>
+    <meta id="headerName" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
     <script src="/res/jquery-3.1.1.min.js"></script>
 
 
@@ -26,6 +29,9 @@
             <p></p>
             <div><input type="password" placeholder="Passord" name="password" class="form-control"/></div>
             <div><input type="submit" value="Logg inn" class="btn btn-lg btn-primary btn-block"/></div>
+            <input type="hidden"
+                   th:name="${_csrf.headerName}"
+                   th:value="${_csrf.token}"/>
         </form>
 
         <div class="starter-template">
@@ -43,6 +49,9 @@
                                 <p><div><input type="text" placeholder="Etternavn" name="etternavn" class="form-control"/></div></p>
                                 <p><div><input type="text" placeholder="Brukernavn" name="brukernavn" class="form-control"/></div></p>
                                 <p><div><input type="password" name="passord" placeholder="Passord" class="form-control"/></div></p>
+                                <input type="hidden"
+                                       th:name="${_csrf.headerName}"
+                                       th:value="${_csrf.token}"/>
                                 <div><input type="submit" value="Opprett" class="btn btn-lg btn-primary btn-block"/></div>
                             </form>
                         </div>
