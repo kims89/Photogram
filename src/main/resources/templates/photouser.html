@@ -139,6 +139,7 @@
 
                         </div>
                         <div class="panel-body">
+                            <span th:text="${pk.kommentar}"></span>
                         </div>
                     </div>
                 </div>
@@ -146,6 +147,7 @@
 
                         <div class="input-group" name="test">
                             <input type="hidden" th:value="${#httpServletRequest.remoteUser}" name="hiddenNavn"/>
+                            <input type="hidden" th:value="${p.id}" name="hiddenBildeID"/>
                             <input type="text" class="form-control" name="textKomment" placeholder="Legg inn kommentar..."/>
                             <span class="input-group-btn">
 
@@ -163,10 +165,26 @@
 <script>
     /*<![CDATA[*/
     $('input[name=submitKomment]').click(function(){
+        var bildeId = $(this).parent().parent().find("input[name=hiddenBildeID]").val();
         var Person = $(this).parent().parent().find("input[name=hiddenNavn]").val();
         var kommentarer = $(this).parent().parent().find("input[name=textKomment]").val();
-        alert(Person+": "+kommentarer);
+
+        var token = document.getElementById("token").getAttribute("content");
+        var headerName = document.getElementById("headerName").getAttribute("content");
+
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            }
+        };
+
+        xmlHttp.open("POST", "/addComments", true);
+        xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlHttp.setRequestHeader(headerName, token);
+        xmlHttp.send("navn="+Person+"&kommentar="+kommentarer+"&bildeid="+bildeId);
+
     });
+
 
     /*]]>*/
 </script>

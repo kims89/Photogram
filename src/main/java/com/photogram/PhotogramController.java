@@ -1,5 +1,6 @@
 package com.photogram;
 
+        import com.photogram.Repository.CommentsRepository;
         import com.photogram.Repository.PhotoRepository;
         import com.photogram.Repository.UserRepository;
         import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class PhotogramController {
 
     @Autowired
     PhotoRepository photoRepository;
+
+    @Autowired
+    CommentsRepository commentsRepository;
 
 
     //Denne requestmappingen gir tilgang til loginsiden.
@@ -48,6 +52,21 @@ public class PhotogramController {
         }
 
         return "redirect:login";
+    }
+
+    //metode som lar lærer opprette brukere i mongoDB til innlogging i handleliste
+    @RequestMapping(value="/addComments", method = RequestMethod.POST)
+    public String addcom(@RequestParam(value = "navn") String navn, @RequestParam(value = "bildeid") String bildeid, @RequestParam(value = "kommentar") String kommentar){
+        List<Comments> commentsList = new ArrayList<Comments>();
+        Comments c = new Comments(navn,kommentar,bildeid);
+        commentsRepository.save(c);
+        Photo p=photoRepository.findOne(bildeid);
+        commentsList.addAll(p.getKommentarer());
+        commentsList.add(c);
+        p.setKommentarer(commentsList);
+        photoRepository.save(p);
+        System.out.println(c.getNavn()+" "+c.getKommentar()+" "+c.getPhotoID());
+        return "photouser";
     }
 
     @RequestMapping(value="/sok", method = RequestMethod.GET)

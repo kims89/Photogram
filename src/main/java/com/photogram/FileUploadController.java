@@ -118,6 +118,7 @@ public class FileUploadController {
         makeFolder();
         List<String> tagList = new ArrayList<String>();
         List<Photo> photoDList = new ArrayList<Photo>();
+        List<Comments> commentsList = new ArrayList<Comments>();
         Photo p = new Photo();
         p.setFilnavn("/files/"+file.getOriginalFilename());
         p.setContentType(file.getContentType());
@@ -126,6 +127,7 @@ public class FileUploadController {
         p.setTag(tagList);
         p.setTittel(tittel);
         p.setPhotographerID(brukerid);
+        p.setKommentarer(commentsList);
         if(file.getContentType().contains("image")){
             photoRepository.save(p);
             storageService.store(file);
