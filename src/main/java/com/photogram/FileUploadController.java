@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +52,6 @@ public class FileUploadController {
 
     @RequestMapping("/photoadmin")
     public String homeAdmin(Model model) {
-
         String brukerid = "";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User u = userRepository.findByBrukernavn(auth.getName());
@@ -122,8 +122,9 @@ public class FileUploadController {
         Photo p = new Photo();
 
 
-
+        System.out.println("før");
         p.setFilnavn("/files/"+file.getOriginalFilename());
+        System.out.println("etter");
         p.setContentType(file.getContentType());
         p.setDato(dato);
         p.setBeskrivelse(beskrivelse);
@@ -131,15 +132,21 @@ public class FileUploadController {
         p.setTittel(tittel);
         p.setPhotographerID(brukerid);
         p.setKommentarer(commentsList);
-        if(file.getContentType().contains("image")){
-            photoRepository.save(p);
-            storageService.store(file);
+        System.out.println("Filen finnes"+file.getOriginalFilename());
 
-            photoRepository.save(p);
-            User user = userRepository.findOne(brukerid);
-            for(Photo ph : photoRepository.findAll()){
-                if(ph.getPhotographerID() != null && ph.getPhotographerID().contains(brukerid)) {
-                    photoDList.add(ph);
+        if(file.getContentType().contains("image")){
+            File y = new File("upload-dir/"+file.getOriginalFilename());
+            storageService.store(file);
+            if(y.exists()){
+                System.out.println("Filen finnes, derfor lager man ikke en ny");
+            }
+            else {
+                photoRepository.save(p);
+                User user = userRepository.findOne(brukerid);
+                for(Photo ph : photoRepository.findAll()){
+                    if(ph.getPhotographerID() != null && ph.getPhotographerID().contains(brukerid)) {
+                        photoDList.add(ph);
+                    }
                 }
             }
         }
