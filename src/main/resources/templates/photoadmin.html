@@ -217,7 +217,7 @@
                             </div></div>
                         <label class="control-label">Dato:</label>
                         <div class="form-group"><div class="modal-dato">
-                            <input type="text" class="form-control" name="idato" id="idato"/>
+                            <div class="form-group"><input class="form-control" name="dato" placeholder="Trykk her for dato" type="text" id="idato" /></div>
                             </div></div>
                     </div>
                 <div class="modal-footer">
@@ -233,6 +233,13 @@
     /*<![CDATA[*/
 
     $( "#dato" ).dateDropper(
+            {
+                lang:"da",
+                format:"d. F Y"
+            }
+    );
+
+    $( "#idato" ).dateDropper(
             {
                 lang:"da",
                 format:"d. F Y"
