@@ -61,7 +61,9 @@ public class PhotogramController {
         Comments c = new Comments(navn,kommentar,bildeid);
         commentsRepository.save(c);
         Photo p=photoRepository.findOne(bildeid);
-        commentsList.addAll(p.getKommentarer());
+        if(p.getKommentarer()!=null){
+            commentsList.addAll(p.getKommentarer());
+        }
         commentsList.add(c);
         p.setKommentarer(commentsList);
         photoRepository.save(p);

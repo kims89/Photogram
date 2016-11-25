@@ -120,6 +120,9 @@ public class FileUploadController {
         List<Photo> photoDList = new ArrayList<Photo>();
         List<Comments> commentsList = new ArrayList<Comments>();
         Photo p = new Photo();
+
+
+
         p.setFilnavn("/files/"+file.getOriginalFilename());
         p.setContentType(file.getContentType());
         p.setDato(dato);
