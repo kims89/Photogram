@@ -74,9 +74,7 @@ public class Photo {
         return beskrivelse;
     }
 
-    public void setBeskrivelse(String beskrivelse) {
-        this.beskrivelse = beskrivelse;
-    }
+    public void setBeskrivelse(String beskrivelse) {this.beskrivelse = beskrivelse; }
 
     public List getTag() {
         return tag;
