@@ -57,9 +57,20 @@ public class PhotogramController {
 
     //metode som lar lærer opprette brukere i mongoDB til innlogging i handleliste
     @RequestMapping(value="/addComments", method = RequestMethod.POST)
-    public String addcom(@RequestParam(value = "navn") String navn, @RequestParam(value = "bildeid") String bildeid, @RequestParam(value = "kommentar") String kommentar){
+    public String addcom(@RequestParam(value = "navn") String navn, @RequestParam(value = "bildeid") String bildeid,
+                         @RequestParam(value = "kommentar") String kommentar, @RequestParam ("rolle") String rolle){
+
+        String FargeRolle="";
+        if(rolle.equals("Bruker")){
+            FargeRolle = "label label-default";
+        }
+        else if (rolle.equals("Fotograf")){
+            FargeRolle = "label label-primary";
+        }
+
+
         List<Comments> commentsList = new ArrayList<Comments>();
-        Comments c = new Comments(navn,kommentar,bildeid);
+        Comments c = new Comments(navn,kommentar,bildeid,rolle,FargeRolle);
         commentsRepository.save(c);
         Photo p=photoRepository.findOne(bildeid);
         if(p.getKommentarer()!=null){

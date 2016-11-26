@@ -112,9 +112,6 @@
 
 <div class="container">
 
-    ogged in user: <span sec:authentication="name"></span> |
-    Roles: <span sec:authentication="principal.authorities"></span>
-
 
     <div class="row" id="fotoflak">
         <br/><br/>
@@ -134,8 +131,8 @@
                         <div class="panel-heading">
                             <strong><span th:text="${pk.navn}"></span>
                             </strong>
-                            <span class="label label-default">Bruker</span>
-                            <span class="label label-primary">Fotograf</span>
+                            <span th:class="${pk.brukerRolleFarge}" th:text="${pk.brukerRolle}"></span>
+                            <!--<span class="label label-primary">Fotograf</span>-->
 
                         </div>
                         <div class="panel-body">
@@ -172,6 +169,7 @@
         var bildeId = $(this).parent().parent().find("input[name=hiddenBildeID]").val();
         var Person = $(this).parent().parent().find("input[name=hiddenNavn]").val();
         var kommentarer = $(this).parent().parent().find("input[name=textKomment]").val();
+        var rolle = "Bruker";
 
         var token = document.getElementById("token").getAttribute("content");
         var headerName = document.getElementById("headerName").getAttribute("content");
@@ -192,7 +190,7 @@
         xmlHttp.open("POST", "/addComments", true);
         xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlHttp.setRequestHeader(headerName, token);
-        xmlHttp.send("navn="+Person+"&kommentar="+kommentarer+"&bildeid="+bildeId);
+        xmlHttp.send("navn="+Person+"&kommentar="+kommentarer+"&bildeid="+bildeId+"&rolle="+rolle);
 
     });
 

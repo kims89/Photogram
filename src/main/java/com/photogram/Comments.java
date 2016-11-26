@@ -11,11 +11,16 @@ public class Comments {
     String navn;
     String kommentar;
     String photoID;
+    String brukerRolle;
+    String brukerRolleFarge;
 
-    public Comments(String navn, String kommentar, String photoID) {
+
+    public Comments(String navn, String kommentar, String photoID, String brukerRolle, String brukerRolleFarge) {
         this.navn = navn;
         this.kommentar = kommentar;
         this.photoID = photoID;
+        this.brukerRolle = brukerRolle;
+        this.brukerRolleFarge = brukerRolleFarge;
     }
 
     public String getId() {
@@ -44,5 +49,21 @@ public class Comments {
 
     public void setPhotoID(String photoID) {
         this.photoID = photoID;
+    }
+
+    public String getBrukerRolle() {
+        return brukerRolle;
+    }
+
+    public void setBrukerRolle(String brukerRolle) {
+        this.brukerRolle = brukerRolle;
+    }
+
+    public String getBrukerRolleFarge() {
+        return brukerRolleFarge;
+    }
+
+    public void setBrukerRolleFarge(String brukerRolleFarge) {
+        this.brukerRolleFarge = brukerRolleFarge;
     }
 }
