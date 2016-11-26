@@ -102,8 +102,8 @@
                 });
 
                 bootstrap_alert = function() {};
-                bootstrap_alert.warning = function(message) {
-                    $('#alert_placeholder').html('<div class="alert alert-success alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+message+'</div>').fadeIn();
+                bootstrap_alert.warning = function(message,funksjon) {
+                    $('#alert_placeholder').html('<div class="alert alert-'+funksjon+' alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+message+'</div>').fadeIn();
                 };
 
         /*]]>*/
@@ -150,7 +150,7 @@
 <div class="jumbotron" style="background-color: #e3f2fd;">
     <div class="container">
         <h2>Hei fotograf!</h2>
-        <div class="alert alert-success" role="alert">Her kan du enkelt legge ut bilder med metadata.</div>
+        <p>Her kan du enkelt legge ut bilder med metadata.</p>
         <div class="row">
             <div class="col-md-4">
                 <form id="data">
@@ -315,11 +315,11 @@
                         "<p class='lead' >"+beskrivelse+"</p>"+
                         "<p class='lead' >"+dato+"</p>" +
                         "<div class='alert alert-warning' role='alert'><a onclick='refreshSite()' class='alert-link'>Oppdater</a> for å slette og endre</div></div>");
-                bootstrap_alert.warning('Your text goes here').fadeIn();
+                bootstrap_alert.warning('Bildeopplasting vellykket','success').fadeIn();
 
             },
             error: function() {
-                alert('Error!');
+                bootstrap_alert.warning('Kunne ikke laste opp bildet. <strong>Tips:</strong> kanskje det finnes element med samme navn i databasen','warning').fadeIn();
             }
         });
         return false;
