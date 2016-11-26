@@ -151,6 +151,39 @@ public class PhotogramController {
         return "photouser";
     }
 
+    @PostMapping("/setTag")
+    public String handleSetTag(@RequestParam("id") String id,@RequestParam("tag") String tag) {
+        List<String> bufferTag;
+        Photo p = photoRepository.findOne(id);
+        if(!p.getTag().contains(tag)) {
+            bufferTag=p.getTag();
+            p.setTag(null);
+            bufferTag.add(tag);
+            p.setTag(bufferTag);
+            photoRepository.save(p);
+        }
+
+        System.out.println(id+tag);
+
+        return "redirect:photoadmin";
+    }
+
+    @PostMapping("/deleteTag")
+    public String handleDeleteTag(@RequestParam("id") String id,@RequestParam("tag") String tag) {
+        List<String> bufferTag;
+        Photo p = photoRepository.findOne(id);
+        if(p.getTag().contains(tag)) {
+            bufferTag=p.getTag();
+            p.setTag(null);
+            bufferTag.remove(tag);
+            p.setTag(bufferTag);
+            photoRepository.save(p);
+        }
+
+
+        return "redirect:photoadmin";
+    }
+
 
 
 // --------------------------------------------------------->
