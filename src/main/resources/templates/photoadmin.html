@@ -71,36 +71,6 @@
                     xmlHttp.send();
                 }
 
-
-                $(document).ready(function () {
-                    var options = {
-                        url: "/sok",
-
-                        getValue: "sok",
-
-
-                        list: {
-                            match: {
-                                enabled: true
-                            },
-                            hideAnimation: {
-                                type: "slide", //normal|slide|fade
-                                time: 400,
-                                callback: function() {}
-                            }
-                        },
-                        template: {
-                            type: "links",
-                            fields: {
-                                link: "url"
-                            }
-                        }
-                    };
-
-                    $("#template-links").easyAutocomplete(options);
-
-                });
-
                 bootstrap_alert = function() {};
                 bootstrap_alert.warning = function(message,funksjon) {
                     $('#alert_placeholder').html('<div class="alert alert-'+funksjon+' alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+message+'</div>').fadeIn();
@@ -179,8 +149,40 @@
                 <input type="text" placeholder="Legg til tag og trykk enter" name="tokenfield-typeahead" th:value="${#strings.listJoin(p.tag,',')}" />
             </div>
             <p class="lead" th:text="${p.beskrivelse}"/>
-            <button class="btn btn-danger" onClick="deleteBildefil(this);">Slett bilde</button>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" th:attr="data-tittel=${p.tittel},data-iden=${p.id},data-beskrivelse=${p.beskrivelse},data-dato=${p.dato}">Endre</button>
+            <div class="form-group">
+                <button class="btn btn-danger" onClick="deleteBildefil(this);">Slett bilde</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" th:attr="data-tittel=${p.tittel},data-iden=${p.id},data-beskrivelse=${p.beskrivelse},data-dato=${p.dato}">Endre</button>
+            </div>
+
+            <div th:each="pk : ${p.kommentarer}" style="width: 100%">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong><span th:text="${pk.navn}"></span>
+                        </strong>
+                        <span th:class="${pk.brukerRolleFarge}" th:text="${pk.brukerRolle}"></span>
+
+                    </div>
+                    <div class="panel-body">
+                        <span th:text="${pk.kommentar}"></span>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 100%" th:id="${p.id}">
+                <div class="panel panel-default">
+                </div>
+            </div>
+            <div>
+
+                <div class="input-group">
+                    <input type="hidden" th:value="${#httpServletRequest.remoteUser}" name="hiddenNavn"/>
+                    <input type="hidden" th:value="${p.id}" name="hiddenBildeID"/>
+                    <input type="text" class="form-control" name="textKomment" placeholder="Legg inn kommentar..."/>
+                    <span class="input-group-btn">
+
+                        <input class="btn btn-primary" name="submitKomment" type="submit"/>
+                        </span>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -232,6 +234,35 @@
 
 <script>
     /*<![CDATA[*/
+
+    $('input[name=submitKomment]').click(function(){
+        var bildeId = $(this).parent().parent().find("input[name=hiddenBildeID]").val();
+        var Person = $(this).parent().parent().find("input[name=hiddenNavn]").val();
+        var kommentarer = $(this).parent().parent().find("input[name=textKomment]").val();
+        var rolle = "Fotograf";
+
+        var token = document.getElementById("token").getAttribute("content");
+        var headerName = document.getElementById("headerName").getAttribute("content");
+
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                //Brukte jQuery for å enkelt legge til nye elementer.
+                $("#"+bildeId).append("<div class='panel panel-default'><div class='panel-heading'>" +
+                        "<strong><span>"+Person+" </span></strong><span class='label label-default'>Bruker</span>" +
+                        "</div>" +
+                        "<div class='panel-body'><span>"+kommentarer+"</span></div>" +
+                        "</div>");
+            }
+
+        };
+
+        xmlHttp.open("POST", "/addComments", true);
+        xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlHttp.setRequestHeader(headerName, token);
+        xmlHttp.send("navn="+Person+"&kommentar="+kommentarer+"&bildeid="+bildeId+"&rolle="+rolle);
+
+    });
 
     $( "#dato" ).dateDropper(
             {
