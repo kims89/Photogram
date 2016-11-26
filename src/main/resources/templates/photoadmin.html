@@ -120,7 +120,10 @@
 <div class="jumbotron" style="background-color: #e3f2fd;">
     <div class="container">
         <h2>Hei fotograf!</h2>
-        <p>Her kan du enkelt legge ut bilder med metadata.</p>
+        <p>Her kan du laste opp bilder med beskrivelse og tag</p>
+            <div th:if="${#lists.isEmpty(photo)}">
+                <p>Du har ingen bilder lastet opp enda. Last opp et bilde under:</p>
+            </div>
         <div class="row">
             <div class="col-md-4">
                 <form id="data">
@@ -129,7 +132,7 @@
                     <div class="form-group"><input class="form-control" name="dato" placeholder="Trykk her for dato" type="text" id="dato" /></div>
                     <p><div class="form-group"><label class="btn btn-default btn-file">Last opp foto<input name="bild" id="bild" type="file" style="display: none;" /></label>
                     <input class="btn btn-primary" type="submit" value="Publiser"/></div></p>
-                    <div id = "alert_placeholder"></div>
+                    <div id = "diert_placeholder"></div>
                 </form>
             </div>
         </div>
