@@ -152,7 +152,6 @@ public class FileUploadController {
             }
         }
 
-
         return "redirect:photoadmin";
     }
 

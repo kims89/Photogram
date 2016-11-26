@@ -34,6 +34,7 @@ public class PhotogramController {
         return "/login";
     }
 
+
     //metode som lar lærer opprette brukere i mongoDB til innlogging i handleliste
     @RequestMapping(value="/NewUser", method = RequestMethod.POST)
     public String nyBruker(@RequestParam(value = "fornavn") String fornavn, @RequestParam(value = "etternavn") String etternavn,
