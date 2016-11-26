@@ -24,6 +24,9 @@
 <div class="container">
     <div class="starter-template">
         <h1>Photogram</h1>
+        <div th:if="${param.error}">
+            Brukernavn eller passord er ugyldig. Prøv på nytt:
+        </div>
         <form th:action="@{/login}" method="post" class="form-signin">
             <div><input type="text" placeholder="Brukernavn" name="username" class="form-control"/></div>
             <p></p>
