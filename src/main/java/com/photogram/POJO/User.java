@@ -2,10 +2,9 @@ package com.photogram.POJO;
 
 import org.springframework.data.annotation.Id;
 
-import java.util.List;
-
 /**
- * Created by kim on 09.11.2016.
+ * Her er Userklassen. Her legges både inn fotografer og bruker, måten dette skilles på er rolle (fotograf=ROLE_ADMIN mens bruker=ROLE_USER).
+ * Det settes krav til at følgende attributter skal være fylt ved innlegg: fornavn, etternavn, brukernavn, passord og rolle.
  */
 public class User {
 

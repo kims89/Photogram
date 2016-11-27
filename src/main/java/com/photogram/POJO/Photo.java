@@ -5,7 +5,8 @@ import org.springframework.data.annotation.Id;
 import java.util.List;
 
 /**
- * Created by kim on 09.11.2016.
+ * Her er bildeklassen. Bildeklassen er knyttet både til bruker og kommentarklassen. En bruker kan ha flere bilder, og et bilde kan ha flere kommentarer.
+ * Det settes krav til at følgende attributter skal være fylt ved innlegg: filnavn contentType (filtype), tittel, beskrivelse og dato.
  */
 public class Photo {
 

@@ -1,7 +1,8 @@
 package com.photogram.POJO;
 
 /**
- * Created by kim on 15.11.2016.
+ * Til motsetning fra de andre POJO-klassene er denne klassen ikke knyttet til en database men heller blir initsiert når det blir gjort en forespørsel gjennom
+ * livesøk for så at det blir presentert ut en JSON-liste med bildetittel, #tagg og fotografer.
  */
 public class Search {
     String sok;
