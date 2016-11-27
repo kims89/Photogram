@@ -1,5 +1,9 @@
 package com.photogram;
 
+        import com.photogram.POJO.Comments;
+        import com.photogram.POJO.Photo;
+        import com.photogram.POJO.Search;
+        import com.photogram.POJO.User;
         import com.photogram.Repository.CommentsRepository;
         import com.photogram.Repository.PhotoRepository;
         import com.photogram.Repository.UserRepository;
@@ -10,12 +14,7 @@ package com.photogram;
         import org.springframework.ui.Model;
         import org.springframework.web.bind.annotation.*;
 
-        import javax.servlet.http.HttpServletRequest;
-        import javax.servlet.http.HttpSession;
-        import java.util.ArrayList;
-        import java.util.HashSet;
-        import java.util.List;
-        import java.util.Set;
+        import java.util.*;
 
 @Controller
 public class PhotogramController {
@@ -30,15 +29,38 @@ public class PhotogramController {
     CommentsRepository commentsRepository;
 
 
+
+    @RequestMapping(value="/", method = RequestMethod.GET)
+    public String homeUser(Model model) {
+        List<Photo> pho = new ArrayList<Photo>();
+        pho.addAll(photoRepository.findAll());
+        Collections.reverse(pho);
+        model.addAttribute("photo", pho);
+
+        return "photouser";
+    }
+
+
     //Denne requestmappingen gir tilgang til loginsiden.
-    @RequestMapping("/login")
+    @RequestMapping(value="/login", method = RequestMethod.GET)
     public String login(){
         return "/login";
     }
 
-    @RequestMapping("/403")
+    @RequestMapping(value="/403", method = RequestMethod.GET)
     public String firenulltre(){
         return "/403";
+    }
+
+    @RequestMapping(value="/PAChangePhoto", method = RequestMethod.POST)
+    public String handleChange(@RequestParam("iid") String id,@RequestParam("itittel") String tittel,@RequestParam("ibeskrivelse") String beskrivelse, @RequestParam("idato") String dato) {
+        Photo p = photoRepository.findOne(id);
+        p.setTittel(tittel);
+        p.setBeskrivelse(beskrivelse);
+        p.setDato(dato);
+        photoRepository.save(p);
+
+        return "redirect:photoadmin";
     }
 
 

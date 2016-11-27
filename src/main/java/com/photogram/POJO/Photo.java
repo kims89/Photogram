@@ -1,4 +1,4 @@
-package com.photogram;
+package com.photogram.POJO;
 
 import org.springframework.data.annotation.Id;
 

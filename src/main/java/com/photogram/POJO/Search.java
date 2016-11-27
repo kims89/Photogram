@@ -1,4 +1,4 @@
-package com.photogram;
+package com.photogram.POJO;
 
 /**
  * Created by kim on 15.11.2016.

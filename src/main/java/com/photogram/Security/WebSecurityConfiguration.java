@@ -1,6 +1,6 @@
 package com.photogram.Security;
 
-import com.photogram.User;
+import com.photogram.POJO.User;
 import com.photogram.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

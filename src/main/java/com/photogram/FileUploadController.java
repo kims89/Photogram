@@ -1,9 +1,11 @@
 package com.photogram;
 
+import com.photogram.POJO.Comments;
+import com.photogram.POJO.Photo;
 import com.photogram.Repository.CommentsRepository;
 import com.photogram.Repository.PhotoRepository;
 import com.photogram.Repository.UserRepository;
-import com.photogram.User;
+import com.photogram.POJO.User;
 import com.photogram.Storage.StorageFileNotFoundException;
 import com.photogram.Storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,19 +16,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Fredrik on 15.11.2016.
@@ -50,7 +46,8 @@ public class FileUploadController {
         this.storageService = storageService;
     }
 
-    @RequestMapping("/photoadmin")
+
+    @RequestMapping(value="/photoadmin", method = RequestMethod.GET)
     public String homeAdmin(Model model) {
         String brukerid = "";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -67,31 +64,7 @@ public class FileUploadController {
         return "photoadmin";
     }
 
-    @RequestMapping("/")
-    public String homeUser(Model model) {
-
-//        Photo p = photoRepository.findOne("58356b1136b59d09f42edbae");
-//        Comments c = new Comments("Kim","Arne og Fredrik skal gjøre det og det og det! æ bestemme","583550f936b59d12582c32d6");
-//        Comments d = new Comments("Arne","Hehehe","58356b1136b59d09f42edbae");
-//        Comments e = new Comments("Fredrik","Nope!","58356b1136b59d09f42edbae");
-//
-//
-//        List<Comments> kom = new ArrayList<Comments>();
-        List<Photo> pho = new ArrayList<Photo>();
-//        kom.add(c);
-//        kom.add(d);
-//        kom.add(e);
-//        p.setKommentarer(kom);
-//        commentsrepository.save(c);
-//        photoRepository.save(p);
-        pho.addAll(photoRepository.findAll());
-        Collections.reverse(pho);
-        model.addAttribute("photo", pho);
-
-        return "photouser";
-    }
-
-    @GetMapping("/files/{filename:.+}")
+    @RequestMapping(value="/files/{filename:.+}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
@@ -102,7 +75,7 @@ public class FileUploadController {
                 .body(file);
     }
 
-    @PostMapping("/PAAddPhoto")
+    @RequestMapping(value="/PAAddPhoto", method = RequestMethod.POST)
     public String handleFileUpload(@RequestParam("bild") MultipartFile file, @RequestParam("tittel") String tittel,
                                    @RequestParam("dato") String dato, @RequestParam ("beskrivelse") String beskrivelse) throws Exception {
 
@@ -151,19 +124,6 @@ public class FileUploadController {
                 throw new Exception("ds");
             }
         }
-
-        return "redirect:photoadmin";
-    }
-
-
-
-    @PostMapping("/PAChangePhoto")
-    public String handleChange(@RequestParam("iid") String id,@RequestParam("itittel") String tittel,@RequestParam("ibeskrivelse") String beskrivelse, @RequestParam("idato") String dato) {
-        Photo p = photoRepository.findOne(id);
-        p.setTittel(tittel);
-        p.setBeskrivelse(beskrivelse);
-        p.setDato(dato);
-        photoRepository.save(p);
 
         return "redirect:photoadmin";
     }
