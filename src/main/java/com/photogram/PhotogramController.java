@@ -190,11 +190,19 @@ public class PhotogramController {
     public String messages(HttpServletRequest request, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User p = userRepository.findByBrukernavn(auth.getName());
-        p.setRolle("ROLE_ADMIN");
-        userRepository.save(p);
+        if(p.getRolle().equals("ROLE_USER")){
+            p.setRolle("ROLE_ADMIN");
+            userRepository.save(p);
+            model.addAttribute("Beskjed", "Logg inn på nytt for å bli en fotograf.");
+
+        }
+        else{
+
+            model.addAttribute("Beskjed", "Du er allerede fotograf... Du trenger ikke utvidede rettigheter for å legge inn bilder.");
+
+        }
         HttpSession httpSession = request.getSession();
         httpSession.invalidate();
-        model.addAttribute("Beskjed", "Logg inn på nytt for å bli en fotograf.");
         return "login";
     }
 
