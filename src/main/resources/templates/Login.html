@@ -13,14 +13,14 @@
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="/res/signin.css"/>
-    <link rel="stylesheet" href="/res/starter-template.css"/>
+    <link rel="stylesheet" href="/res/login.css"/>
 
 </head>
 <body>
 
 <div class="container">
 
-    <div class="starter-template">
+    <div class="login">
         <h1>Photogram</h1>
 
         <div th:if="${Beskjed != null}">
@@ -43,7 +43,7 @@
                    th:value="${_csrf.token}"/>
         </form>
 
-        <div class="starter-template">
+        <div class="login">
             <h3>Ikke bruker?</h3>
             <div class="form-signin">
                 <button type="button" class="btn btn-lg btn-primary btn-block" data-toggle="modal" data-target=".bs-example-modal-sm">Opprett bruker</button>
