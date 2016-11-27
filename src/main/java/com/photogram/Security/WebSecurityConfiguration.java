@@ -12,6 +12,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+/**
+ * Her er WebSecurityConfiguration-klassen. Når en bruker authentiserer seg vil det gjøres en sjekk opp mot user-databasen om at brukeren finnes og hvordan
+ * rolle som han skal ha.
+ */
+
 @Configuration
 public class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
@@ -35,7 +40,7 @@ public class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdap
                     return new org.springframework.security.core.userdetails.User(user.getBrukernavn(), user.getPassord(), true, true, true, true,
                             AuthorityUtils.createAuthorityList(user.getRolle()));
                 } else {
-                    throw new UsernameNotFoundException("could not find the user '"
+                    throw new UsernameNotFoundException("Finner ikke bruker '"
                             + username + "'");
                 }
             }
