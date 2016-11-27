@@ -32,11 +32,10 @@ public class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdap
     UserDetailsService userDetailsService() {
         return new UserDetailsService() {
 
-            //Her sjekkes det om brukeren eksisterer i mongoDB, og gis deretter tilgang.
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
                 User user = userRepository.findByBrukernavn(username);
-                if(user != null) {
+                if (user != null) {
                     return new org.springframework.security.core.userdetails.User(user.getBrukernavn(), user.getPassord(), true, true, true, true,
                             AuthorityUtils.createAuthorityList(user.getRolle()));
                 } else {
