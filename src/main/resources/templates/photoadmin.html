@@ -247,6 +247,7 @@
         var Person = $(this).parent().parent().find("input[name=hiddenNavn]").val();
         var kommentarer = $(this).parent().parent().find("input[name=textKomment]").val();
         var rolle = "Fotograf";
+        $(this).parent().parent().find("input[name=textKomment]").val('');
 
         var token = document.getElementById("token").getAttribute("content");
         var headerName = document.getElementById("headerName").getAttribute("content");
