@@ -354,10 +354,16 @@
                         "<p class='lead' >"+dato+"</p>" +
                         "<div class='alert alert-warning' role='alert'><a onclick='refreshSite()' class='alert-link'>Oppdater</a> for å slette og endre</div></div>");
                 bootstrap_alert.warning('Bildeopplasting vellykket','success');
+                $( "#tittel" ).val('');
+                $( "#beskrivelse").val('');
+                $( "#dato" ).val('');
 
             },
             error: function() {
                 bootstrap_alert.warning('Kunne ikke laste opp bildet. <strong>Tips:</strong> kanskje det finnes element med samme navn i databasen','warning');
+                $( "#tittel" ).val('');
+                $( "#beskrivelse").val('');
+                $( "#dato" ).val('');
             }
         });
         return false;
