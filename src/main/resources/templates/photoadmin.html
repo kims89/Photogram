@@ -290,7 +290,7 @@
 
             .on('tokenfield:createdtoken', function (e) {
                 var id=$(this).parent().parent().attr('value');
-                var tag = e.attrs.value.toLowerCase().replace(/[^a-zA-ZåæøÅÆØ123456789 ]/g, "");
+                var tag = e.attrs.value.toLowerCase().replace(/[^a-zA-ZåæøÅÆØ1234567890 ]/g, "");
                 var token = document.getElementById("token").getAttribute("content");
                 var headerName = document.getElementById("headerName").getAttribute("content");
                 var xmlHttp = new XMLHttpRequest();

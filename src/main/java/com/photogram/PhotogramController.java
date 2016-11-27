@@ -10,6 +10,8 @@ package com.photogram;
         import org.springframework.ui.Model;
         import org.springframework.web.bind.annotation.*;
 
+        import javax.servlet.http.HttpServletRequest;
+        import javax.servlet.http.HttpSession;
         import java.util.ArrayList;
         import java.util.HashSet;
         import java.util.List;
@@ -42,7 +44,7 @@ public class PhotogramController {
         User user;
         if (brukernavn != "") {
             if (userRepository.findByBrukernavn(brukernavn) == null){
-                user = new User(fornavn, etternavn, brukernavn, passord, "ROLE_ADMIN");
+                user = new User(fornavn, etternavn, brukernavn, passord, "ROLE_USER");
                 userRepository.save(user);
 
                 System.out.println("Ny bruker opprettet med brukernavn: "+brukernavn+" og passord: "+passord);
@@ -184,12 +186,18 @@ public class PhotogramController {
         return "redirect:photoadmin";
     }
 
+    @RequestMapping(value = "/SetRolePhotographer", method = RequestMethod.GET)
+    public String messages(HttpServletRequest request, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User p = userRepository.findByBrukernavn(auth.getName());
+        p.setRolle("ROLE_ADMIN");
+        userRepository.save(p);
+        HttpSession httpSession = request.getSession();
+        httpSession.invalidate();
+        model.addAttribute("Beskjed", "Logg inn på nytt for å bli en fotograf.");
+        return "login";
+    }
 
 
-// --------------------------------------------------------->
-//Endre rolle
-//        User p = userRepository.findOne("5829f946d7a15f7b50d28245");
-//        p.setRolle("ROLE_ADMIN");
-//        userRepository.save(p);
 
 }
