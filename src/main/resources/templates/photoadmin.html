@@ -62,6 +62,7 @@
                         if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
                             div = document.getElementById("fotograflak");
                             div.removeChild(ele.parentNode);
+
                         }
                     };
 
@@ -73,7 +74,7 @@
 
                 bootstrap_alert = function() {};
                 bootstrap_alert.warning = function(message,funksjon) {
-                    $('#alert_placeholder').html('<div class="alert alert-'+funksjon+' alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+message+'</div>').fadeIn();
+                    $('#alert_placeholder').html('<div class="alert alert-'+funksjon+' alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+message+'</div>');
                 };
 
         /*]]>*/
@@ -121,9 +122,6 @@
     <div class="container">
         <h2>Hei fotograf!</h2>
         <p>Her kan du laste opp bilder med beskrivelse og tag</p>
-            <div th:if="${#lists.isEmpty(photo)}">
-                <p>Du har ingen bilder lastet opp enda. Last opp et bilde under:</p>
-            </div>
         <div class="row">
             <div class="col-md-4">
                 <form id="data">
@@ -132,7 +130,7 @@
                     <div class="form-group"><input class="form-control" name="dato" placeholder="Trykk her for dato" type="text" id="dato" /></div>
                     <p><div class="form-group"><label class="btn btn-default btn-file">Last opp foto<input name="bild" id="bild" type="file" style="display: none;" /></label>
                     <input class="btn btn-primary" type="submit" value="Publiser"/></div></p>
-                    <div id = "diert_placeholder"></div>
+                    <div id= "alert_placeholder"></div>
                 </form>
             </div>
         </div>
@@ -249,6 +247,7 @@
         var Person = $(this).parent().parent().find("input[name=hiddenNavn]").val();
         var kommentarer = $(this).parent().parent().find("input[name=textKomment]").val();
         var rolle = "Fotograf";
+        $(this).parent().parent().find("input[name=textKomment]").val('');
 
         var token = document.getElementById("token").getAttribute("content");
         var headerName = document.getElementById("headerName").getAttribute("content");
@@ -356,10 +355,16 @@
                         "<p class='lead' >"+dato+"</p>" +
                         "<div class='alert alert-warning' role='alert'><a onclick='refreshSite()' class='alert-link'>Oppdater</a> for å slette og endre</div></div>");
                 bootstrap_alert.warning('Bildeopplasting vellykket','success');
+                $( "#tittel" ).val('');
+                $( "#beskrivelse").val('');
+                $( "#dato" ).val('');
 
             },
             error: function() {
-                bootstrap_alert.warning('Kunne ikke laste opp bildet. <strong>Tips:</strong> kanskje det finnes element med samme navn i databasen','warning').fadeIn();
+                bootstrap_alert.warning('Kunne ikke laste opp bildet. <strong>Tips:</strong> kanskje det finnes element med samme navn i databasen','warning');
+                $( "#tittel" ).val('');
+                $( "#beskrivelse").val('');
+                $( "#dato" ).val('');
             }
         });
         return false;
