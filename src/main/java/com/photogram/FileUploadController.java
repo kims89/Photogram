@@ -2,10 +2,10 @@ package com.photogram;
 
 import com.photogram.POJO.Comments;
 import com.photogram.POJO.Photo;
+import com.photogram.POJO.User;
 import com.photogram.Repository.CommentsRepository;
 import com.photogram.Repository.PhotoRepository;
 import com.photogram.Repository.UserRepository;
-import com.photogram.POJO.User;
 import com.photogram.Storage.StorageFileNotFoundException;
 import com.photogram.Storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Fredrik on 15.11.2016.
- */
+
 @Controller
 public class FileUploadController {
 
@@ -47,14 +45,14 @@ public class FileUploadController {
     }
 
 
-    @RequestMapping(value="/photoadmin", method = RequestMethod.GET)
+    @RequestMapping(value = "/photoadmin", method = RequestMethod.GET)
     public String homeAdmin(Model model) {
-        String brukerid = "";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User u = userRepository.findByBrukernavn(auth.getName());
         List<Photo> photoList = new ArrayList<Photo>();
-        for(Photo ph : photoRepository.findAll()){
-            if(ph.getPhotographerID() != null && ph.getPhotographerID().contains(u.getId())) {
+
+        for (Photo ph : photoRepository.findAll()) {
+            if (ph.getPhotographerID() != null && ph.getPhotographerID().contains(u.getId())) {
                 photoList.add(ph);
             }
         }
@@ -64,7 +62,7 @@ public class FileUploadController {
         return "photoadmin";
     }
 
-    @RequestMapping(value="/files/{filename:.+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/files/{filename:.+}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
@@ -75,14 +73,14 @@ public class FileUploadController {
                 .body(file);
     }
 
-    @RequestMapping(value="/PAAddPhoto", method = RequestMethod.POST)
+    @RequestMapping(value = "/PAAddPhoto", method = RequestMethod.POST)
     public String handleFileUpload(@RequestParam("bild") MultipartFile file, @RequestParam("tittel") String tittel,
-                                   @RequestParam("dato") String dato, @RequestParam ("beskrivelse") String beskrivelse) throws Exception {
+                                   @RequestParam("dato") String dato, @RequestParam("beskrivelse") String beskrivelse) throws Exception {
 
         String brukerid = "";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        for(User phgr : userRepository.findAll()){
-            if(phgr.getBrukernavn() != null && phgr.getBrukernavn().contains(auth.getName())) {
+        for (User phgr : userRepository.findAll()) {
+            if (phgr.getBrukernavn() != null && phgr.getBrukernavn().contains(auth.getName())) {
                 brukerid = phgr.getId();
 
             }
@@ -96,7 +94,7 @@ public class FileUploadController {
 
 
         System.out.println("før");
-        p.setFilnavn("/files/"+file.getOriginalFilename());
+        p.setFilnavn("/files/" + file.getOriginalFilename());
         System.out.println("etter");
         p.setContentType(file.getContentType());
         p.setDato(dato);
@@ -105,22 +103,21 @@ public class FileUploadController {
         p.setTittel(tittel);
         p.setPhotographerID(brukerid);
         p.setKommentarer(commentsList);
-        System.out.println("Filen finnes"+file.getOriginalFilename());
+        System.out.println("Filen finnes" + file.getOriginalFilename());
 
-        if(file.getContentType().contains("image")){
-            File y = new File("upload-dir/"+file.getOriginalFilename());
-            if(!y.exists()){
+        if (file.getContentType().contains("image")) {
+            File y = new File("upload-dir/" + file.getOriginalFilename());
+            if (!y.exists()) {
                 storageService.store(file);
                 photoRepository.save(p);
                 User user = userRepository.findOne(brukerid);
-                for(Photo ph : photoRepository.findAll()){
-                    if(ph.getPhotographerID() != null && ph.getPhotographerID().contains(brukerid)) {
+                for (Photo ph : photoRepository.findAll()) {
+                    if (ph.getPhotographerID() != null && ph.getPhotographerID().contains(brukerid)) {
                         photoDList.add(ph);
                     }
                 }
                 System.out.println("Filen finnes, derfor lager man ikke en ny");
-            }
-            else {
+            } else {
                 throw new Exception("ds");
             }
         }
@@ -135,12 +132,14 @@ public class FileUploadController {
     }
 
     @RequestMapping(path = "/delete/{id}", method = RequestMethod.POST)
-    public @ResponseBody void delete(@PathVariable("id") String id){
+    public
+    @ResponseBody
+    void delete(@PathVariable("id") String id) {
         System.out.println(id);
         Photo p = photoRepository.findOne(id);
         photoRepository.delete(id);
-        for(Comments c: commentsrepository.findAll()){
-            if(c.getPhotoID().equals(id)) {
+        for (Comments c : commentsrepository.findAll()) {
+            if (c.getPhotoID().equals(id)) {
                 commentsrepository.delete(c);
             }
 
@@ -149,25 +148,24 @@ public class FileUploadController {
 
         String filnavn = p.getFilnavn();
 
-        File file = new File("upload-dir/"+filnavn.replace("/files/",""));
+        File file = new File("upload-dir/" + filnavn.replace("/files/", ""));
         file.delete();
 
     }
 
-    public void makeFolder(){
+    public void makeFolder() {
         File dir = new File("upload-dir");
         if (!dir.exists()) {
             boolean result = false;
             System.out.println("upload-dir finnes ikke i dag");
 
-            try{
+            try {
                 dir.mkdir();
                 result = true;
-            }
-            catch(SecurityException se){
+            } catch (SecurityException se) {
                 //handle it
             }
-            if(result) {
+            if (result) {
                 System.out.println("upload-dir opprettet");
             }
         }
