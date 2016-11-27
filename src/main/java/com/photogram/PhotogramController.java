@@ -36,6 +36,11 @@ public class PhotogramController {
         return "/login";
     }
 
+    @RequestMapping("/403")
+    public String firenulltre(){
+        return "/403";
+    }
+
 
     //metode som lar lærer opprette brukere i mongoDB til innlogging i handleliste
     @RequestMapping(value="/NewUser", method = RequestMethod.POST)
