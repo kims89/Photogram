@@ -24,10 +24,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * FileUploadController. Denne sørger stortsett for alle mappingene som går direkte på akkurat det med opplastinger av bilder.
+ * Valgte også å legge inn /photoadmin på denne kontrolleren for at det var en mer naturlig plass med tanke på de tette knyttingene
+ * som den har mot opplasting.
+ */
 
 @Controller
 public class FileUploadController {
 
+    //Her "autowire" alle repositoryene opp mot kontrolleren, det gjør at det enklere kan gjøres oppslag.
     @Autowired
     CommentsRepository commentsrepository;
 
@@ -45,6 +51,8 @@ public class FileUploadController {
     }
 
 
+    //Denne legger alle fotografens bilder i en liste som presentere ut gjennom model når fotograden etterspør /photoadmin.
+    //Den reverserer også listen slik at de siste bildene blir lagt ut først.
     @RequestMapping(value = "/photoadmin", method = RequestMethod.GET)
     public String homeAdmin(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -62,6 +70,7 @@ public class FileUploadController {
         return "photoadmin";
     }
 
+    //Denne tillhører opplastingsdelen, når et bilde blir etterspurt vil den vises med "localhost:8080/filer/bilde.jpg".
     @RequestMapping(value = "/files/{filename:.+}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
@@ -73,29 +82,34 @@ public class FileUploadController {
                 .body(file);
     }
 
+
+    //Bilde blir opplastet ved /PAAddPhoto (post). Det postes fil, tittel (string), dato (string), beskrivelse (string).
     @RequestMapping(value = "/PAAddPhoto", method = RequestMethod.POST)
     public String handleFileUpload(@RequestParam("bild") MultipartFile file, @RequestParam("tittel") String tittel,
                                    @RequestParam("dato") String dato, @RequestParam("beskrivelse") String beskrivelse) throws Exception {
 
+
         String brukerid = "";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        for (User phgr : userRepository.findAll()) {
-            if (phgr.getBrukernavn() != null && phgr.getBrukernavn().contains(auth.getName())) {
-                brukerid = phgr.getId();
 
-            }
-        }
+        //Hener ut fotografid.
+        User phgr = userRepository.findByBrukernavn(auth.getName());
+        brukerid = phgr.getId();
 
+        //Lager mappen (upload-dir) om den ikke eksisterer.
         makeFolder();
+
+        //Oppretter en liste for å initsiere tag.
         List<String> tagList = new ArrayList<String>();
-        List<Photo> photoDList = new ArrayList<Photo>();
+
+//        List<Photo> photoDList = new ArrayList<Photo>();
+
+        //initsiere kommentarlisten.
         List<Comments> commentsList = new ArrayList<Comments>();
+
+        //Setter opp objekt i photoklassen
         Photo p = new Photo();
-
-
-        System.out.println("før");
         p.setFilnavn("/files/" + file.getOriginalFilename());
-        System.out.println("etter");
         p.setContentType(file.getContentType());
         p.setDato(dato);
         p.setBeskrivelse(beskrivelse);
@@ -103,20 +117,21 @@ public class FileUploadController {
         p.setTittel(tittel);
         p.setPhotographerID(brukerid);
         p.setKommentarer(commentsList);
-        System.out.println("Filen finnes" + file.getOriginalFilename());
 
+        //Vi har satt en if hvis filen som lastes opp ikke er et bilde.
         if (file.getContentType().contains("image")) {
+            //Vi har også en if hvis filen allerede eksisterer. Da blir det returnert feil tilbake til klientdelen.
             File y = new File("upload-dir/" + file.getOriginalFilename());
             if (!y.exists()) {
+                //Filen lagres til mappe og sti til databasen.
                 storageService.store(file);
                 photoRepository.save(p);
-                User user = userRepository.findOne(brukerid);
-                for (Photo ph : photoRepository.findAll()) {
-                    if (ph.getPhotographerID() != null && ph.getPhotographerID().contains(brukerid)) {
-                        photoDList.add(ph);
-                    }
-                }
-                System.out.println("Filen finnes, derfor lager man ikke en ny");
+//                User user = userRepository.findOne(brukerid);
+//                for (Photo ph : photoRepository.findAll()) {
+//                    if (ph.getPhotographerID() != null && ph.getPhotographerID().contains(brukerid)) {
+//                        photoDList.add(ph);
+//                    }
+//                }
             } else {
                 throw new Exception("ds");
             }
@@ -131,10 +146,11 @@ public class FileUploadController {
         return ResponseEntity.notFound().build();
     }
 
+    //Her slettes filen. Det er gitt at filen og alle spor fra databasene bilder og kommentera slettes.
+    //Filen slettes også fra mappen.
     @RequestMapping(path = "/delete/{id}", method = RequestMethod.POST)
-    public
     @ResponseBody
-    void delete(@PathVariable("id") String id) {
+    public void delete(@PathVariable("id") String id) {
         System.out.println(id);
         Photo p = photoRepository.findOne(id);
         photoRepository.delete(id);
@@ -145,7 +161,6 @@ public class FileUploadController {
 
         }
 
-
         String filnavn = p.getFilnavn();
 
         File file = new File("upload-dir/" + filnavn.replace("/files/", ""));
@@ -153,6 +168,7 @@ public class FileUploadController {
 
     }
 
+    //Denne metoden oppretter en mappe
     public void makeFolder() {
         File dir = new File("upload-dir");
         if (!dir.exists()) {
