@@ -3,7 +3,8 @@ package com.photogram;
 import org.springframework.data.annotation.Id;
 
 /**
- * Created by kim on 22.11.2016.
+ * Her er kommenteringsklassen. Den er knyttet til bildet.
+ * Det settes krav til at følgende attributter skal være fylt ved innlegg: navn på bruker, kommentar, photoid, rolle (for kommentarfeltet), og fargen på rolle (for kommentarfeltet)
  */
 public class Comments {
     @Id

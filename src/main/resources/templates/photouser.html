@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:width="http://www.w3.org/1999/xhtml">
+      xmlns:width="http://www.w3.org/1999/xhtml">
 <head>
     <meta id="token" name="_csrf" th:content="${_csrf.token}"/>
     <meta id="headerName" name="_csrf_header" th:content="${_csrf.headerName}"/>
 
     <script src="/res/jquery-3.1.1.min.js"></script>
-    <script src="/res/tether.min.js"></script><!-- Tether for Bootstrap. Nødvendig for at Bootstrap skal fungere optimalt -->
+    <script src="/res/tether.min.js"></script>
+    <!-- Tether for Bootstrap. Nødvendig for at Bootstrap skal fungere optimalt -->
     <script src="/res/jquery.easy-autocomplete.js"></script>
     <script src="/res/jquery.easy-autocomplete.js"></script>
-    <link rel="stylesheet" href="/res/easy-autocomplete.min.css" />
+    <link rel="stylesheet" href="/res/easy-autocomplete.min.css"/>
     <link rel="stylesheet" href="/res/bootstrap.css"/>
-    <link rel="stylesheet" href="/res/bootstrap-tokenfield.css" />
-    <link rel="stylesheet" href="/res/tokenfield-typeahead.css" />
-    <script src="/res/bootstrap.js" ></script>
+    <link rel="stylesheet" href="/res/bootstrap-tokenfield.css"/>
+    <link rel="stylesheet" href="/res/tokenfield-typeahead.css"/>
+    <script src="/res/bootstrap.js"></script>
 
     <title>Photogram / Bruker</title>
 
@@ -39,7 +40,8 @@
                     hideAnimation: {
                         type: "slide", //normal|slide|fade
                         time: 400,
-                        callback: function() {}
+                        callback: function () {
+                        }
                     }
                 }
             };
@@ -48,20 +50,20 @@
 
         });
 
-        function leggTilKommentar(){
-            var id=$(this).parent().attr('name');
-            console.log("Logg: "+ parentId);
+        function leggTilKommentar() {
+            var id = $(this).parent().attr('name');
+            console.log("Logg: " + parentId);
             var token = document.getElementById("token").getAttribute("content");
             var headerName = document.getElementById("headerName").getAttribute("content");
             var xmlHttp = new XMLHttpRequest();
-            xmlHttp.onreadystatechange = function(){
-                if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                     div = document.getElementById("fotograflak");
                     div.removeChild(ele.parentNode);
                 }
             };
 
-            xmlHttp.open("POST", "/delete/"+parentId, true);
+            xmlHttp.open("POST", "/delete/" + parentId, true);
             xmlHttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
             xmlHttp.setRequestHeader(headerName, token);
             xmlHttp.send();
@@ -77,13 +79,16 @@
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="/"><strong>Photogram</strong> / Bruker</a>
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
                 ☰
             </button>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><p><form><input id="template-links" placeholder="Søk" /></form></p></li>
+                <li><p>
+                    <form><input id="template-links" placeholder="Søk"/></form>
+                    </p></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
@@ -96,7 +101,9 @@
                 </li>
                 <li>
 
-                    <a style="background-color: #e3f2fd;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Flere valg<span class="caret"></span></a>
+                    <a style="background-color: #e3f2fd;" href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false">Flere valg<span
+                            class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/photoadmin">Gå til fotografside</a></li>
                         <li role="separator" class="divider"></li>
@@ -114,48 +121,50 @@
 
 
     <div class="row" id="fotoflak">
-        <br/><br/>
+        <br/><br/><br/>
         <div class="col-lg-7" th:each="p : ${photo}">
-            <h1><span th:text="${p.tittel}"></span> <small><span th:text="${p.dato}"></span></small></h1>
+            <h1><span th:text="${p.tittel}"></span>
+                <small><span th:text="${p.dato}"></span></small>
+            </h1>
             <div style='border-bottom:6px solid #3ee7cd;'></div>
-            <img th:src="${p.filnavn}" class="img-rounded" width="100%" />
+            <img th:src="${p.filnavn}" class="img-rounded" width="100%"/>
             <ol class="breadcrumb">
                 <li>#</li>
                 <li th:each="pt : ${p.tag}"><a th:href="'/tag/'+${pt}"><span th:text="${pt}"></span></a></li>
             </ol>
             <blockquote>
-            <p th:text="${p.beskrivelse}"/>
-             </blockquote>
-                <div th:each="pk : ${p.kommentarer}" style="width: 100%">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <strong><span th:text="${pk.navn}"></span>
-                            </strong>
-                            <span th:class="${pk.brukerRolleFarge}" th:text="${pk.brukerRolle}"></span>
-                            <!--<span class="label label-primary">Fotograf</span>-->
+                <p th:text="${p.beskrivelse}"/>
+            </blockquote>
+            <div th:each="pk : ${p.kommentarer}" style="width: 100%">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong><span th:text="${pk.navn}"></span>
+                        </strong>
+                        <span th:class="${pk.brukerRolleFarge}" th:text="${pk.brukerRolle}"></span>
+                        <!--<span class="label label-primary">Fotograf</span>-->
 
-                        </div>
-                        <div class="panel-body">
-                            <span th:text="${pk.kommentar}"></span>
-                        </div>
                     </div>
+                    <div class="panel-body">
+                        <span th:text="${pk.kommentar}"></span>
                     </div>
+                </div>
+            </div>
             <div style="width: 100%" th:id="${p.id}">
-            <div class="panel panel-default">
+                <div class="panel panel-default">
+                </div>
             </div>
-            </div>
-                    <div>
+            <div>
 
-                        <div class="input-group">
-                            <input type="hidden" th:value="${#httpServletRequest.remoteUser}" name="hiddenNavn"/>
-                            <input type="hidden" th:value="${p.id}" name="hiddenBildeID"/>
-                            <input type="text" class="form-control" name="textKomment" placeholder="Legg inn kommentar..."/>
-                            <span class="input-group-btn">
+                <div class="input-group">
+                    <input type="hidden" th:value="${#httpServletRequest.remoteUser}" name="hiddenNavn"/>
+                    <input type="hidden" th:value="${p.id}" name="hiddenBildeID"/>
+                    <input type="text" class="form-control" name="textKomment" placeholder="Legg inn kommentar..."/>
+                    <span class="input-group-btn">
 
                         <input class="btn btn-primary" name="submitKomment" type="submit"/>
                         </span>
-                        </div>
-                    </div>
+                </div>
+            </div>
             &nbsp;
             <div style='border-bottom:3px solid #e7e7e7;'></div>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -171,7 +180,7 @@
 
 <script>
     /*<![CDATA[*/
-    $('input[name=submitKomment]').click(function(){
+    $('input[name=submitKomment]').click(function () {
         var bildeId = $(this).parent().parent().find("input[name=hiddenBildeID]").val();
         var Person = $(this).parent().parent().find("input[name=hiddenNavn]").val();
         var kommentarer = $(this).parent().parent().find("input[name=textKomment]").val();
@@ -185,10 +194,10 @@
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                 //Brukte jQuery for å enkelt legge til nye elementer.
-                $("#"+bildeId).append("<div class='panel panel-default'><div class='panel-heading'>" +
-                        "<strong><span>"+Person+" </span></strong><span class='label label-default'>Bruker</span>" +
+                $("#" + bildeId).append("<div class='panel panel-default'><div class='panel-heading'>" +
+                        "<strong><span>" + Person + " </span></strong><span class='label label-default'>Bruker</span>" +
                         "</div>" +
-                        "<div class='panel-body'><span>"+kommentarer+"</span></div>" +
+                        "<div class='panel-body'><span>" + kommentarer + "</span></div>" +
                         "</div>");
             }
 
@@ -197,7 +206,7 @@
         xmlHttp.open("POST", "/addComments", true);
         xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlHttp.setRequestHeader(headerName, token);
-        xmlHttp.send("navn="+Person+"&kommentar="+kommentarer+"&bildeid="+bildeId+"&rolle="+rolle);
+        xmlHttp.send("navn=" + Person + "&kommentar=" + kommentarer + "&bildeid=" + bildeId + "&rolle=" + rolle);
 
     });
 
