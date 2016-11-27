@@ -38,6 +38,9 @@
             <p></p>
             <div><input type="password" placeholder="Passord" name="password" class="form-control"/></div>
             <div><input type="submit" value="Logg inn" class="btn btn-lg btn-primary btn-block"/></div>
+            <input type="hidden"
+                   th:name="${_csrf.headerName}"
+                   th:value="${_csrf.token}"/>
         </form>
 
         <div class="starter-template">

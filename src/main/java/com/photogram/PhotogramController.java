@@ -187,7 +187,7 @@ public class PhotogramController {
     }
 
     @RequestMapping(value = "/SetRolePhotographer", method = RequestMethod.GET)
-    public String messages(HttpServletRequest request, Model model) {
+    public String messages(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User p = userRepository.findByBrukernavn(auth.getName());
         if(p.getRolle().equals("ROLE_USER")){
@@ -201,8 +201,8 @@ public class PhotogramController {
             model.addAttribute("Beskjed", "Du er allerede fotograf... Du trenger ikke utvidede rettigheter for å legge inn bilder.");
 
         }
-        HttpSession httpSession = request.getSession();
-        httpSession.invalidate();
+        SecurityContextHolder.getContext().setAuthentication(null);
+
         return "login";
     }
 
