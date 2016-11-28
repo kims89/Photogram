@@ -2,16 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:width="http://www.w3.org/1999/xhtml">
 <head>
+    <title>Photogram / Login</title>
+
+    <!-- Helt nødvenfig for at Bootstrap skal fungere som det skal -->
 
     <script src="/res/jquery-3.1.1.min.js"></script>
-
-
-    <script src="/res/tether.min.js"></script><!-- Tether for Bootstrap. Nødvendig for at Bootstrap skal fungere optimalt -->
+    <script src="/res/tether.min.js"></script>
+    <!-- Tether for Bootstrap. Nødvendig for at Bootstrap skal fungere optimalt -->
     <link rel="stylesheet" href="/res/bootstrap.css"/>
-    <script src="/res/bootstrap.js" ></script>
+    <script src="/res/bootstrap.js"></script>
 
 
-    <!-- Custom styles for this template -->
+    <!-- Spesialtipassende CSS for Bootstrap -->
     <link rel="stylesheet" href="/res/signin.css"/>
     <link rel="stylesheet" href="/res/login.css"/>
 
@@ -23,16 +25,22 @@
     <div class="login">
         <h1>Photogram</h1>
 
+        <!-- Hvis brukeren kommer fra legg til fotograf-funksjon blir det returnert tekst -->
+
         <div th:if="${Beskjed != null}">
-            <div class="alert alert-info" role="alert"><strong>Informasjon:</strong> <span th:text="${Beskjed}"></span></div>
+            <div class="alert alert-info" role="alert"><strong>Informasjon:</strong> <span th:text="${Beskjed}"></span>
+            </div>
 
         </div>
 
-
+        <!-- Hvis brukeren skriver feil blir det returnert en tekst. -->
 
         <div th:if="${param.error}">
             Brukernavn eller passord er ugyldig. Prøv på nytt:
         </div>
+
+        <!-- login-form -->
+
         <form th:action="@{/login}" method="post" class="form-signin">
             <div><input type="text" placeholder="Brukernavn" name="username" class="form-control"/></div>
             <p></p>
@@ -43,26 +51,44 @@
                    th:value="${_csrf.token}"/>
         </form>
 
+        <!-- registrering av bruker -->
+
         <div class="login">
             <h3>Ikke bruker?</h3>
             <div class="form-signin">
-                <button type="button" class="btn btn-lg btn-primary btn-block" data-toggle="modal" data-target=".bs-example-modal-sm">Opprett bruker</button>
+                <button type="button" class="btn btn-lg btn-primary btn-block" data-toggle="modal"
+                        data-target=".bs-example-modal-sm">Opprett bruker
+                </button>
             </div>
             &nbsp;&nbsp;&nbsp;
+
+            <!-- Model (popup registrering av bruker) -->
+
             <p class="lead">Er du registrert som fotograf? Trykk <a href="/photoadmin">her</a> før du logger inn</p>
-                <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-                    <div class="modal-dialog modal-sm" role="document">
-                        <div class="modal-content">
-                            <form th:action="@{/NewUser}" method="post" class="form-signin">
-                                <p><div><input type="text" placeholder="Fornavn" name="fornavn" class="form-control"/></div></p>
-                                <p><div><input type="text" placeholder="Etternavn" name="etternavn" class="form-control"/></div></p>
-                                <p><div><input type="text" placeholder="Brukernavn" name="brukernavn" class="form-control"/></div></p>
-                                <p><div><input type="password" name="passord" placeholder="Passord" class="form-control"/></div></p>
-                                <div><input type="submit" value="Opprett" class="btn btn-lg btn-primary btn-block"/></div>
-                            </form>
-                        </div>
+            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <form th:action="@{/NewUser}" method="post" class="form-signin">
+                            <p>
+                            <div><input type="text" placeholder="Fornavn" name="fornavn" class="form-control"/></div>
+                            </p>
+                            <p>
+                            <div><input type="text" placeholder="Etternavn" name="etternavn" class="form-control"/>
+                            </div>
+                            </p>
+                            <p>
+                            <div><input type="text" placeholder="Brukernavn" name="brukernavn" class="form-control"/>
+                            </div>
+                            </p>
+                            <p>
+                            <div><input type="password" name="passord" placeholder="Passord" class="form-control"/>
+                            </div>
+                            </p>
+                            <div><input type="submit" value="Opprett" class="btn btn-lg btn-primary btn-block"/></div>
+                        </form>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 </div>

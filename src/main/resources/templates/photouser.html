@@ -2,13 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:width="http://www.w3.org/1999/xhtml">
 <head>
+    <title>Photogram / Bruker</title>
+
+    <!-- META-data i ift websikkerhet (CSRF) -->
     <meta id="token" name="_csrf" th:content="${_csrf.token}"/>
     <meta id="headerName" name="_csrf_header" th:content="${_csrf.headerName}"/>
 
+    <!-- Jquery (javascript biblotek) -->
     <script src="/res/jquery-3.1.1.min.js"></script>
-    <script src="/res/tether.min.js"></script>
+
     <!-- Tether for Bootstrap. Nødvendig for at Bootstrap skal fungere optimalt -->
-    <script src="/res/jquery.easy-autocomplete.js"></script>
+    <script src="/res/tether.min.js"></script>
+
+    <!-- Bootstrap gjøres tilgjengelig her -->
     <script src="/res/jquery.easy-autocomplete.js"></script>
     <link rel="stylesheet" href="/res/easy-autocomplete.min.css"/>
     <link rel="stylesheet" href="/res/bootstrap.css"/>
@@ -16,10 +22,11 @@
     <link rel="stylesheet" href="/res/tokenfield-typeahead.css"/>
     <script src="/res/bootstrap.js"></script>
 
-    <title>Photogram / Bruker</title>
-
     <script>
         /*<![CDATA[*/
+
+        //ved søk blir easyautocomplete tilgjengeliggjort her. Når brukeren begynner å skrive
+        //blir det asynkront gjort oppslag mot jsonliste (/sok)
         $(document).ready(function () {
             var options = {
                 url: "/sok",
@@ -50,31 +57,12 @@
 
         });
 
-        function leggTilKommentar() {
-            var id = $(this).parent().attr('name');
-            console.log("Logg: " + parentId);
-            var token = document.getElementById("token").getAttribute("content");
-            var headerName = document.getElementById("headerName").getAttribute("content");
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.onreadystatechange = function () {
-                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                    div = document.getElementById("fotograflak");
-                    div.removeChild(ele.parentNode);
-                }
-            };
-
-            xmlHttp.open("POST", "/delete/" + parentId, true);
-            xmlHttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-            xmlHttp.setRequestHeader(headerName, token);
-            xmlHttp.send();
-        }
-
         /*]]>*/
     </script>
 </head>
 <body>
 
-<!-- Fixed navbar -->
+<!-- navbar helt øverst på siden som gjenspeiles gjennom photoadmin og photouser (Bootstrap) -->
 <nav class="navbar navbar-light navbar-fixed-top" style="background-color: #e3f2fd;">
     <div class="container">
         <div class="navbar-header">
@@ -84,6 +72,7 @@
                 ☰
             </button>
         </div>
+        <!-- Her kollapser menyen ved dynamisk bruk -->
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><p>
@@ -112,14 +101,15 @@
 
                 </li>
             </ul>
-        </div><!--/.nav-collapse -->
+        </div>
 
     </div>
 </nav>
 
 <div class="container">
 
-
+    <!-- Her er visningen av bildene, de blir vist fram på en pen måte gjennom bildet, tagg, info og kommentar etter der
+     igjen. (Bootstrap) -->
     <div class="row" id="fotoflak">
         <br/><br/><br/>
         <div class="col-lg-7" th:each="p : ${photo}">
@@ -170,6 +160,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div class="lead">
+            <!-- Hvis ingen bilder er lastet opp får brukeren beskjed om dette. -->
             <div th:if="${#lists.isEmpty(photo)}">
                 &nbsp;&nbsp;&nbsp;
                 <p class="lead">Ingen bilder er lastet opp enda</p>
@@ -180,6 +171,9 @@
 
 <script>
     /*<![CDATA[*/
+
+    //Siden alle bildene har hver sine kommentarfelt er det enklest å å gjøre slik at når
+    //et input (submitkomment) blir trykket på så skal den poste kommentaren til server-delen.
     $('input[name=submitKomment]').click(function () {
         var bildeId = $(this).parent().parent().find("input[name=hiddenBildeID]").val();
         var Person = $(this).parent().parent().find("input[name=hiddenNavn]").val();
@@ -187,18 +181,19 @@
         var rolle = "Bruker";
         $(this).parent().parent().find("input[name=textKomment]").val('');
 
+        //CSRF-token blir lagt ved i post.
         var token = document.getElementById("token").getAttribute("content");
         var headerName = document.getElementById("headerName").getAttribute("content");
 
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                //Brukte jQuery for å enkelt legge til nye elementer.
+                //Brukte jQuery for å enkelt legge til nye kommentarer asynkront.
                 $("#" + bildeId).append("<div class='panel panel-default'><div class='panel-heading'>" +
-                        "<strong><span>" + Person + " </span></strong><span class='label label-default'>Bruker</span>" +
-                        "</div>" +
-                        "<div class='panel-body'><span>" + kommentarer + "</span></div>" +
-                        "</div>");
+                    "<strong><span>" + Person + " </span></strong><span class='label label-default'>Bruker</span>" +
+                    "</div>" +
+                    "<div class='panel-body'><span>" + kommentarer + "</span></div>" +
+                    "</div>");
             }
 
         };

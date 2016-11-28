@@ -2,176 +2,201 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:width="http://www.w3.org/1999/xhtml">
 <head>
+    <title>Photogram / Fotograf</title>
+    <!-- META-data i ift websikkerhet (CSRF) -->
     <meta id="token" name="_csrf" th:content="${_csrf.token}"/>
     <meta id="headerName" name="_csrf_header" th:content="${_csrf.headerName}"/>
 
+    <!-- Jquery (javascript biblotek) -->
     <script src="/res/jquery-3.1.1.min.js"></script>
-    <script src="/res/tether.min.js"></script><!-- Tether for Bootstrap. Nødvendig for at Bootstrap skal fungere optimalt -->
 
-    <script src="/res/jquery.easy-autocomplete.js"></script>
+    <!-- Tether for Bootstrap. Nødvendig for at Bootstrap skal fungere optimalt -->
+    <script src="/res/tether.min.js"></script>
+
+    <!-- tokenfield hentes her fra res -->
     <script src="/res/bootstrap-tokenfield.js"></script>
 
-    <script src="/res/jquery.easy-autocomplete.js"></script>
-    <link rel="stylesheet" href="/res/easy-autocomplete.min.css" />
-
+    <!-- Datedroppe blir gjort tilgjengelig her (js og css) -->
     <script src="/res/datedropper.js"></script>
     <link rel="stylesheet" type="text/css" href="/res/datedropper.css"/>
 
+    <!-- Bootstrap gjøres tilgjengelig her -->
     <link rel="stylesheet" href="/res/bootstrap.css"/>
-    <link rel="stylesheet" href="/res/bootstrap-tokenfield.css" />
-    <link rel="stylesheet" href="/res/tokenfield-typeahead.css" />
-    <script src="/res/bootstrap.js" ></script>
-
-
+    <link rel="stylesheet" href="/res/bootstrap-tokenfield.css"/>
+    <link rel="stylesheet" href="/res/tokenfield-typeahead.css"/>
+    <script src="/res/bootstrap.js"></script>
 
 
     <script>
-                /*<![CDATA[*/
+        /*<![CDATA[*/
 
-                function refreshSite() {
-                    $( "#refreshSite" ).load( "/photoadmin" );
+        //Denne refresher siden gjennom jQuery. En mer asynkront måte å refreshe siden.
+
+        function refreshSite() {
+            $("#refreshSite").load("/photoadmin");
+        }
+
+        //her postes endringen til serverdelen. endring-funksjon
+        function Endre() {
+            var id = document.getElementById("iid").value;
+            var tittel = document.getElementById("itittel").value;
+            var beskrivelse = document.getElementById("ibeskrivelse").value;
+            var dato = document.getElementById("idato").value;
+            var token = document.getElementById("token").getAttribute("content");
+            var headerName = document.getElementById("headerName").getAttribute("content");
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    location.reload();
                 }
+            };
+            xmlHttp.open("POST", "/PAChangePhoto", true);
+            xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlHttp.setRequestHeader(headerName, token);
+            xmlHttp.send("iid=" + id + "&itittel=" + tittel + "&ibeskrivelse=" + beskrivelse + "&idato=" + dato);
+        }
 
-                function Endre() {
-                    var id = document.getElementById("iid").value;
-                    var tittel = document.getElementById("itittel").value;
-                    var beskrivelse = document.getElementById("ibeskrivelse").value;
-                    var dato = document.getElementById("idato").value;
-                    var token = document.getElementById("token").getAttribute("content");
-                    var headerName = document.getElementById("headerName").getAttribute("content");
-                    var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.onreadystatechange = function () {
-                        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                            location.reload();
-                        }
-                    };
-                    xmlHttp.open("POST", "/PAChangePhoto", true);
-                    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    xmlHttp.setRequestHeader(headerName, token);
-                    xmlHttp.send("iid="+id+"&itittel="+tittel+"&ibeskrivelse="+beskrivelse+"&idato="+dato);
+
+        //her slettes et bilde asynkront fra photoadmin-siden.
+        function deleteBildefil(ele) {
+            var parentId = ele.parentNode.id;
+            var token = document.getElementById("token").getAttribute("content");
+            var headerName = document.getElementById("headerName").getAttribute("content");
+            console.log("Logg: " + parentId);
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    div = document.getElementById("fotograflak");
+                    div.removeChild(ele.parentNode);
+
                 }
+            };
 
+            xmlHttp.open("POST", "/delete/" + parentId, true);
+            xmlHttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+            xmlHttp.setRequestHeader(headerName, token);
+            xmlHttp.send();
+        }
 
-                function deleteBildefil(ele){
-                    var parentId = ele.parentNode.id;
-                    var token = document.getElementById("token").getAttribute("content");
-                    var headerName = document.getElementById("headerName").getAttribute("content");
-                    console.log("Logg: "+ parentId);
-                    var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.onreadystatechange = function(){
-                        if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
-                            div = document.getElementById("fotograflak");
-                            div.removeChild(ele.parentNode);
-
-                        }
-                    };
-
-                    xmlHttp.open("POST", "/delete/"+parentId, true);
-                    xmlHttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-                    xmlHttp.setRequestHeader(headerName, token);
-                    xmlHttp.send();
-                }
-
-                bootstrap_alert = function() {};
-                bootstrap_alert.warning = function(message,funksjon) {
-                    $('#alert_placeholder').html('<div class="alert alert-'+funksjon+' alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+message+'</div>');
-                };
+        //Denne tilgjengeliggjør varsler ved innlegging av bilder ved feil og suksess.
+        bootstrap_alert = function () {
+        };
+        bootstrap_alert.warning = function (message, funksjon) {
+            $('#alert_placeholder').html('<div class="alert alert-' + funksjon + ' alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + message + '</div>');
+        };
 
         /*]]>*/
     </script>
-    <title>Title</title>
+
 </head>
 <body>
 <div id="refreshSite">
-<!-- Fixed navbar -->
-<nav class="navbar navbar-light navbar-fixed-top" style="background-color: #e3f2fd;">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/photoadmin"><strong>Photogram</strong> / Fotograf</a>
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                ☰
-            </button>
+    <!-- navbar helt øverst på siden som gjenspeiles gjennom photoadmin og photouser (Bootstrap) -->
+    <nav class="navbar navbar-light navbar-fixed-top" style="background-color: #e3f2fd;">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/photoadmin"><strong>Photogram</strong> / Fotograf</a>
+                <!-- Når menyen kollapser blir menyen lagt inn en knapp (Bootstrap) -->
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    ☰
+                </button>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <p>
+                        <form action="/" method="get">
+                            <input type="submit" class="btn btn-info" value="Gå til brukersiden"/>
+                        </form>
+                        </p>
+                    </li>
+                </ul>
+
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <p>
+                        <form th:action="@{/logout}" method="post">
+                            <input type="submit" class="btn btn-danger" value="Logg ut"/>
+                        </form>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li>
-                    <p>
-                    <form action="/" method="get">
-                        <input type="submit" class="btn btn-info" value="Gå til brukersiden"/>
+    </nav>
+    <!-- Her er headeren på siden, brukeren kan legge inn foto her -->
+    <div class="jumbotron" style="background-color: #e3f2fd;">
+        <div class="container">
+            <h2>Hei fotograf!</h2>
+            <p>Her kan du laste opp bilder med beskrivelse og tag</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <form id="data">
+                        <div class="form-group"><input type="text" class="form-control" name="tittel" id="tittel"
+                                                       placeholder="Tittel"/></div>
+                        <div class="form-group"><input type="text" class="form-control" name="beskrivelse"
+                                                       id="beskrivelse" placeholder="Beskrivelse"/></div>
+                        <div class="form-group"><input class="form-control" name="dato" placeholder="Trykk her for dato"
+                                                       type="text" id="dato"/></div>
+                        <p>
+                        <div class="form-group"><label class="btn btn-default btn-file">Last opp foto<input name="bild"
+                                                                                                            id="bild"
+                                                                                                            type="file"
+                                                                                                            style="display: none;"/></label>
+                            <input class="btn btn-primary" type="submit" value="Publiser"/></div>
+                        </p>
+                        <div id="alert_placeholder"></div>
                     </form>
-                    </p>
-                </li>
-            </ul>
-
-
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <p>
-                    <form th:action="@{/logout}" method="post">
-                        <input type="submit" class="btn btn-danger" value="Logg ut"/>
-                    </form>
-                    </p>
-                </li>
-            </ul>
-        </div><!--/.nav-collapse -->
-
-    </div>
-</nav>
-<!-- Main jumbotron for a primary marketing message or call to action -->
-<div class="jumbotron" style="background-color: #e3f2fd;">
-    <div class="container">
-        <h2>Hei fotograf!</h2>
-        <p>Her kan du laste opp bilder med beskrivelse og tag</p>
-        <div class="row">
-            <div class="col-md-4">
-                <form id="data">
-                    <div class="form-group"><input type="text" class="form-control" name="tittel" id="tittel" placeholder="Tittel" /></div>
-                    <div class="form-group"><input type="text" class="form-control" name="beskrivelse" id="beskrivelse" placeholder="Beskrivelse" /></div>
-                    <div class="form-group"><input class="form-control" name="dato" placeholder="Trykk her for dato" type="text" id="dato" /></div>
-                    <p><div class="form-group"><label class="btn btn-default btn-file">Last opp foto<input name="bild" id="bild" type="file" style="display: none;" /></label>
-                    <input class="btn btn-primary" type="submit" value="Publiser"/></div></p>
-                    <div id= "alert_placeholder"></div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
+    <!-- fotografene legges etter hverandre i en form for liste. For å få
+     et best mulig utseende valgte vi å bruke div isteden for tabell-->
     <div class="container">
         <div class="row" id="fotograflakUpdate"></div>
         <div class="row" id="fotograflak">
             <div class="col-lg-7" th:each="p : ${photo}" th:id="${p.id}">
                 <br/>
-                <h1><span th:text="${p.tittel}"></span> <small><span th:text="${p.dato}"></span></small></h1>
+                <h1><span th:text="${p.tittel}"></span>
+                    <small><span th:text="${p.dato}"></span></small>
+                </h1>
                 <div style='border-bottom:6px solid #3ee7cd;'></div>
-                <img th:src="${p.filnavn}" class="img-rounded" width="100%" />
+                <img th:src="${p.filnavn}" class="img-rounded" width="100%"/>
                 <div class="form-group" th:value="${p.id}">
-                &nbsp;
-                <input type="text" placeholder="Legg til tag og trykk enter" name="tokenfield-typeahead" th:value="${#strings.listJoin(p.tag,',')}" />
-            </div>
-            <p class="lead" th:text="${p.beskrivelse}"/>
-            <button class="btn btn-danger" onClick="deleteBildefil(this);">Slett bilde</button>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" th:attr="data-tittel=${p.tittel},data-iden=${p.id},data-beskrivelse=${p.beskrivelse},data-dato=${p.dato}">Endre</button>
-            <p></p>
-            <div th:each="pk : ${p.kommentarer}" >
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong><span th:text="${pk.navn}"></span>
-                        </strong>
-                        <span th:class="${pk.brukerRolleFarge}" th:text="${pk.brukerRolle}"></span>
+                    &nbsp;
+                    <input type="text" placeholder="Legg til tag og trykk enter" name="tokenfield-typeahead"
+                           th:value="${#strings.listJoin(p.tag,',')}"/>
+                </div>
+                <p class="lead" th:text="${p.beskrivelse}"/>
+                <button class="btn btn-danger" onClick="deleteBildefil(this);">Slett bilde</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modelEndring"
+                        th:attr="data-tittel=${p.tittel},data-iden=${p.id},data-beskrivelse=${p.beskrivelse},data-dato=${p.dato}">
+                    Endre
+                </button>
+                <p></p>
+                <div th:each="pk : ${p.kommentarer}">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong><span th:text="${pk.navn}"></span>
+                            </strong>
+                            <span th:class="${pk.brukerRolleFarge}" th:text="${pk.brukerRolle}"></span>
 
-                    </div>
-                    <div class="panel-body">
-                        <span th:text="${pk.kommentar}"></span>
+                        </div>
+                        <div class="panel-body">
+                            <span th:text="${pk.kommentar}"></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div style="width: 100%" th:id="'kommentar'+${p.id}">
-                <div class="panel panel-default">
+                <div style="width: 100%" th:id="'kommentar'+${p.id}">
+                    <div class="panel panel-default">
+                    </div>
+
+
                 </div>
-
-
-            </div>
 
 
                 <div>
@@ -190,59 +215,64 @@
                 <div style='border-bottom:3px solid #e7e7e7;'></div>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
+            </div>
+
         </div>
-
     </div>
+    &nbsp;
 </div>
-<script>
-    /*<![CDATA[*/
-
-
-
-    /*]]>*/
-</script>
-&nbsp;
-</div>
+<!-- Modelviewer, den gir tilgang til et view hvor brukerne kan endre metadata for bildet -->
 <div class="bd-example">
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modelEndring" tabindex="-1" role="dialog" aria-labelledby="modelEndringLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title" id="exampleModalLabel">New message</h4>
+                    <h4 class="modal-title" id="modelEndringLabel">Endre bildet</h4>
                 </div>
                 <div class="modal-body">
-                        <div class="modal-id">
-                            <input type="hidden" name="iid" id="iid" />
-                        </div>
-                        <label class="control-label">Tittel:</label>
-                        <div class="form-group"><div class="modal-tittel">
-                            <input type="text" class="form-control" name="itittel" id="itittel"/>
-                            </div></div>
-                        <label class="control-label">Beskrivelse:</label>
-                        <div class="form-group"><div class="modal-beskrivelse">
-                                <input type="text" class="form-control" name="ibeskrivelse" id="ibeskrivelse"/>
-                            </div></div>
-                        <label class="control-label">Dato:</label>
-                        <div class="form-group"><div class="modal-dato">
-                            <div class="form-group"><input class="form-control" name="dato" placeholder="Trykk her for dato" type="text" id="idato" /></div>
-                            </div></div>
+                    <div class="modal-id">
+                        <input type="hidden" name="iid" id="iid"/>
                     </div>
+                    <label class="control-label">Tittel:</label>
+                    <div class="form-group">
+                        <div class="modal-tittel">
+                            <input type="text" class="form-control" name="itittel" id="itittel"/>
+                        </div>
+                    </div>
+                    <label class="control-label">Beskrivelse:</label>
+                    <div class="form-group">
+                        <div class="modal-beskrivelse">
+                            <input type="text" class="form-control" name="ibeskrivelse" id="ibeskrivelse"/>
+                        </div>
+                    </div>
+                    <label class="control-label">Dato:</label>
+                    <div class="form-group">
+                        <div class="modal-dato">
+                            <div class="form-group"><input class="form-control" name="dato"
+                                                           placeholder="Trykk her for dato" type="text" id="idato"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" onclick="Endre()" class="btn btn-primary">Endre</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>
                 </div>
             </div>
         </div>
-  </div>
+    </div>
 </div>
 
 <script>
     /*<![CDATA[*/
 
-    $('input[name=submitKomment]').click(function(){
+    //Siden alle bildene har hver sine kommentarfelt er det enklest å å gjøre slik at når
+    //et input (submitkomment) blir trykket på så skal den poste kommentaren til server-delen.
+    $('input[name=submitKomment]').click(function () {
         var bildeId = $(this).parent().parent().find("input[name=hiddenBildeID]").val();
         var Person = $(this).parent().parent().find("input[name=hiddenNavn]").val();
         var kommentarer = $(this).parent().parent().find("input[name=textKomment]").val();
@@ -255,12 +285,12 @@
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                //Brukte jQuery for å enkelt legge til nye elementer.
-                $("#kommentar"+bildeId).append("<div class='panel panel-default'><div class='panel-heading'>" +
-                        "<strong><span>"+Person+" </span></strong><span class='label label-primary'>Fotograf</span>" +
-                        "</div>" +
-                        "<div class='panel-body'><span>"+kommentarer+"</span></div>" +
-                        "</div>");
+                //Brukte jQuery for å enkelt legge til nye kommentarer asynkront.
+                $("#kommentar" + bildeId).append("<div class='panel panel-default'><div class='panel-heading'>" +
+                    "<strong><span>" + Person + " </span></strong><span class='label label-primary'>Fotograf</span>" +
+                    "</div>" +
+                    "<div class='panel-body'><span>" + kommentarer + "</span></div>" +
+                    "</div>");
             }
 
         };
@@ -268,73 +298,77 @@
         xmlHttp.open("POST", "/addComments", true);
         xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlHttp.setRequestHeader(headerName, token);
-        xmlHttp.send("navn="+Person+"&kommentar="+kommentarer+"&bildeid="+bildeId+"&rolle="+rolle);
+        xmlHttp.send("navn=" + Person + "&kommentar=" + kommentarer + "&bildeid=" + bildeId + "&rolle=" + rolle);
 
     });
 
-    $( "#dato" ).dateDropper(
-            {
-                lang:"da",
-                format:"d. F Y"
-            }
+    //Datedropper tilgjengeliggjøres her, formateringen er dag. måned år. Det er to, en til innlegging og en til endring.
+    $("#dato").dateDropper(
+        {
+            lang: "da",
+            format: "d. F Y"
+        }
     );
 
-    $( "#idato" ).dateDropper(
-            {
-                lang:"da",
-                format:"d. F Y"
-            }
+    $("#idato").dateDropper(
+        {
+            lang: "da",
+            format: "d. F Y"
+        }
     );
 
+    //her tilgjengeliggjøres tag. og muliggjør sletting og innlegging av tag til serverdel
     $('input[name=tokenfield-typeahead]')
 
-            .on('tokenfield:createdtoken', function (e) {
-                var id=$(this).parent().parent().attr('value');
-                var tag = e.attrs.value.toLowerCase().replace(/[^a-zA-ZåæøÅÆØ1234567890 ]/g, "");
-                var token = document.getElementById("token").getAttribute("content");
-                var headerName = document.getElementById("headerName").getAttribute("content");
-                var xmlHttp = new XMLHttpRequest();
-                xmlHttp.onreadystatechange = function () {
-                    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                        console.log();
-                    }
-                };
-                xmlHttp.open("POST", "/setTag", true);
-                xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xmlHttp.setRequestHeader(headerName, token);
-                xmlHttp.send("id="+id+"&tag="+tag);
-            })
+    //Når en tag blir lagt til blir alle spesialtegn fjernet og stor bokstab fjernes.
+        .on('tokenfield:createdtoken', function (e) {
+            var id = $(this).parent().parent().attr('value');
+            var tag = e.attrs.value.toLowerCase().replace(/[^a-zA-ZåæøÅÆØ1234567890 ]/g, "");
+            var token = document.getElementById("token").getAttribute("content");
+            var headerName = document.getElementById("headerName").getAttribute("content");
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    console.log();
+                }
+            };
+            xmlHttp.open("POST", "/setTag", true);
+            xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlHttp.setRequestHeader(headerName, token);
+            xmlHttp.send("id=" + id + "&tag=" + tag);
+        })
 
-            .on('tokenfield:removedtoken', function (e) {
-                var id=$(this).parent().parent().attr('value');
-                var tag = e.attrs.value;
-                var token = document.getElementById("token").getAttribute("content");
-                var headerName = document.getElementById("headerName").getAttribute("content");
-                var xmlHttp = new XMLHttpRequest();
-                xmlHttp.onreadystatechange = function () {
-                    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                        console.log();
-                    }
-                };
-                xmlHttp.open("POST", "/deleteTag", true);
-                xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xmlHttp.setRequestHeader(headerName, token);
-                xmlHttp.send("id="+id+"&tag="+tag);
-            })
+        //ved fjerning av av tag blir akkurat den stringen tatt bort fra objektet (bildet)
+        .on('tokenfield:removedtoken', function (e) {
+            var id = $(this).parent().parent().attr('value');
+            var tag = e.attrs.value;
+            var token = document.getElementById("token").getAttribute("content");
+            var headerName = document.getElementById("headerName").getAttribute("content");
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    console.log();
+                }
+            };
+            xmlHttp.open("POST", "/deleteTag", true);
+            xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlHttp.setRequestHeader(headerName, token);
+            xmlHttp.send("id=" + id + "&tag=" + tag);
+        })
 
 
-            .tokenfield();
+        .tokenfield();
 
-    //Program a custom submit function for the form
-    $("form#data").submit(function(event){
-        //disable the default form submission
+    //Ved innlegging (post) av fil og string/metadata blir dette gjort med formdata i jQuery.
+    //dette gjøres asynkront.
+    $("form#data").submit(function (event) {
         event.preventDefault();
-        var tittel = $( "#tittel" ).val();
-        var beskrivelse = $( "#beskrivelse").val();
-        var dato = $( "#dato" ).val();
+        var tittel = $("#tittel").val();
+        var beskrivelse = $("#beskrivelse").val();
+        var dato = $("#dato").val();
         bilde = document.getElementById("bild").files[0].name;
 
-        //grab all form data
+        //Alle formverdien blir hentet her
         var formData = new FormData($(this)[0]);
         $.ajax({
 
@@ -350,34 +384,33 @@
             },
             processData: false,
             success: function (returndata) {
-                $("#fotograflakUpdate").append("<div class='col-lg-7'><h2>"+tittel+" <small>"+dato+" </small><span class='label label-success'>Ny!</span></h2><br/><img src='/files/"+bilde+"' class='img-rounded' width='100%' />" +
-                        "<p class='lead' >"+beskrivelse+"</p>"+
-                        "<p class='lead' >"+dato+"</p>" +
-                        "<div class='alert alert-warning' role='alert'><a onclick='refreshSite()' class='alert-link'>Oppdater</a> for å slette og endre</div></div>");
-                bootstrap_alert.warning('Bildeopplasting vellykket','success');
-                $( "#tittel" ).val('');
-                $( "#beskrivelse").val('');
-                $( "#dato" ).val('');
+                $("#fotograflakUpdate").append("<div class='col-lg-7'><h2>" + tittel + " <small>" + dato + " </small><span class='label label-success'>Ny!</span></h2><br/><img src='/files/" + bilde + "' class='img-rounded' width='100%' />" +
+                    "<p class='lead' >" + beskrivelse + "</p>" +
+                    "<p class='lead' >" + dato + "</p>" +
+                    "<div class='alert alert-warning' role='alert'><a onclick='refreshSite()' class='alert-link'>Oppdater</a> for å slette og endre</div></div>");
+                bootstrap_alert.warning('Bildeopplasting vellykket', 'success');
+                $("#tittel").val('');
+                $("#beskrivelse").val('');
+                $("#dato").val('');
 
             },
-            error: function() {
-                bootstrap_alert.warning('Kunne ikke laste opp bildet. <strong>Tips:</strong> kanskje det finnes element med samme navn i databasen','warning');
-                $( "#tittel" ).val('');
-                $( "#beskrivelse").val('');
-                $( "#dato" ).val('');
+            error: function () {
+                bootstrap_alert.warning('Kunne ikke laste opp bildet. <strong>Tips:</strong> kanskje det finnes element med samme navn i databasen', 'warning');
+                $("#tittel").val('');
+                $("#beskrivelse").val('');
+                $("#dato").val('');
             }
         });
         return false;
     });
 
-    $('#exampleModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
+    //Her blir model satt, alle verdiene fra objektet hentes dit.
+    $('#modelEndring').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
         var id = button.data('iden');
         var dato = button.data('dato');
         var beskrivelse = button.data('beskrivelse');
-        var tittel = button.data('tittel');// Extract info from data-* attributes
-        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var tittel = button.data('tittel');
         var modal = $(this);
         modal.find('.modal-title').text('Rediger ' + tittel);
         modal.find('.modal-tittel input').val(tittel);
