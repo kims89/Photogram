@@ -174,12 +174,12 @@ public class FileUploadController {
         if (!dir.exists()) {
             boolean result = false;
             System.out.println("upload-dir finnes ikke i dag");
-
+            //Først forsøkes det å opprettes en mappen...
             try {
                 dir.mkdir();
                 result = true;
+                //Om det ikke går vil det bli sendt en exception..
             } catch (SecurityException se) {
-                //handle it
             }
             if (result) {
                 System.out.println("upload-dir opprettet");
