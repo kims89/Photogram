@@ -243,6 +243,7 @@ public class PhotogramController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User p = userRepository.findByBrukernavn(auth.getName());
         if (p.getRolle().equals("ROLE_USER")) {
+            //her settes rollen til ROLE_ADMIN, og deretter lagres til databasen
             p.setRolle("ROLE_ADMIN");
             userRepository.save(p);
             model.addAttribute("Beskjed", "Logg inn på nytt for å bli en fotograf.");
@@ -252,6 +253,7 @@ public class PhotogramController {
             model.addAttribute("Beskjed", "Du er allerede fotograf... Du trenger ikke utvidede rettigheter for å legge inn bilder.");
 
         }
+        //Her blir brukeren logget ut
         SecurityContextHolder.getContext().setAuthentication(null);
 
         return "login";
