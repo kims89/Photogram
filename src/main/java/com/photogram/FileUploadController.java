@@ -126,12 +126,6 @@ public class FileUploadController {
                 //Filen lagres til mappe og sti til databasen.
                 storageService.store(file);
                 photoRepository.save(p);
-//                User user = userRepository.findOne(brukerid);
-//                for (Photo ph : photoRepository.findAll()) {
-//                    if (ph.getPhotographerID() != null && ph.getPhotographerID().contains(brukerid)) {
-//                        photoDList.add(ph);
-//                    }
-//                }
             } else {
                 throw new Exception("ds");
             }
