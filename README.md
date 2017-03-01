@@ -22,10 +22,3 @@ http://easyautocomplete.com = EasyAutocomplete is a highly configurable jquery a
 http://sliptree.github.io/bootstrap-tokenfield = Advanced tagging/tokenizing plugin for jQuery and Twitter Bootstrap with a focus on keyboard and copy-paste support.
 
 http://felicegattuso.com/projects/datedropper = is a jQuery plugin that provides a quick and easy way to manage dates for input fields.
-
-<h2>Endringslogg</h2>
-- 21.11.2016: Lagt inn mulighet til å legge inn tagg fra fotografsiden.
-- 21.11.2016: Endret foto-objektet slik at det er mulig å legge inn beskrivelse også
-- 20.11.2016: GUI implementert på login-siden
-- 20.11.2016: Lagt inn jQuery oppdatering av siden (For å få en mer dynamisk opplevelse når man trykker oppdater)
-- 20.11.2016: I den siste utgaven av søk kan får man et mer oversiktlig søkeresultat
