@@ -1,5 +1,5 @@
 # Photogram
-Eksamensprosjekt med Kim, Fredrik og Arne.
+Eksamensprosjekt
 
 <h2>Kjernen</h2>
 - Thymeleaf
