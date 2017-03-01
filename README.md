@@ -6,6 +6,7 @@ Eksamensprosjekt
 - Spring Security
 - Spring Web
 - MongoDB
+- Bootstrap
 
 <h2>Lenker</h2>
 http://bootsnipp.com/snippets/featured/user-comment-example
